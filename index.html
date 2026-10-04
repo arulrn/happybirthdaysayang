@@ -23,6 +23,10 @@
 
     /* Responsive safety patch: no desktop layout/function changes */
     @media (max-width:720px){
+      /* Mobile viewport: lock the page width so horizontal overflow cannot make the layout wobble */
+      html,body{width:100%;max-width:100%;overflow-x:hidden;}
+      header{width:100%;max-width:100vw;left:0;right:0;}
+      main{width:100%;max-width:100%;overflow-x:hidden;}
       /* Mobile header: keep the brand visible and let navigation scroll horizontally */
       header{height:auto;}
       .nav-scroller{
@@ -63,9 +67,9 @@
         font-size:.72rem;
         line-height:1.2;
       }
-      .planet-map{max-width:92vw;}
+      .planet-map{width:min(calc(100vw - 2rem),650px);max-width:calc(100vw - 2rem);left:0;right:0;margin-left:auto;margin-right:auto;}
       #universe{padding-top:8.5rem;}
-      .planet{max-width:29vw;}
+      .planet{width:clamp(72px,27vw,104px);max-width:27vw;}
       .reader-shell{width:calc(100vw - 1.4rem);max-width:100%;min-width:0;}
       /* Mobile: preserve the full illustration instead of cropping it */
       .reader-illustration{width:100%;max-width:100%;height:auto;}
@@ -85,7 +89,7 @@
       .nav-scroller>a:first-child{font-size:.9rem !important;}
       .nav-scroller .nav-link{font-size:.68rem;}
       #universe{padding-top:8rem;}
-      .planet-map{width:min(92vw,330px);}
+      .planet-map{width:min(calc(100vw - 2rem),330px);max-width:calc(100vw - 2rem);}
       .p1{top:-1%;}
       .p2{right:0;}
       .p4{bottom:-1%;}
