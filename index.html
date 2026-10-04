@@ -280,8 +280,8 @@
 .universe-indicator{position:absolute;inset:50% auto auto 50%;transform:translate(-50%,-50%);width:116px;height:116px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;z-index:2;pointer-events:none;color:#f5d8a1;background:radial-gradient(circle,rgba(245,216,161,.08),rgba(9,10,22,0) 70%);text-shadow:0 0 16px rgba(245,216,161,.28)}
 .universe-indicator span{font-family:Georgia,serif;font-size:14px;font-style:italic;letter-spacing:.02em}.universe-indicator small{font-size:9px;letter-spacing:.18em;text-transform:uppercase;opacity:.55}
 /* Visible music control: fixed on top of every section and opening screen */
-.music-dock{position:fixed;right:18px;bottom:18px;z-index:99999;display:flex;align-items:center;gap:9px;padding:8px 9px 8px 14px;border:1px solid rgba(255,255,255,.14);border-radius:999px;background:rgba(9,10,22,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 10px 30px rgba(0,0,0,.28);transition:transform .3s ease,box-shadow .3s ease,background .3s ease}.music-dock:hover{transform:translateY(-2px)}
-.music-dock-label{font:500 10px/1 'Space Mono',monospace;letter-spacing:.06em;color:rgba(255,255,255,.72);white-space:nowrap}.music-dock button{width:38px;height:38px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.16);border-radius:50%;background:rgba(233,165,169,.16);color:#fff;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.2);-webkit-tap-highlight-color:transparent}.music-dock button:hover{background:rgba(233,165,169,.28)}.music-dock button svg{width:18px;height:18px}.music-dock:has(#music-toggle[aria-pressed="true"]){box-shadow:0 12px 30px rgba(233,165,169,.14)}.music-dock:hover{transform:translateY(-2px)}
+.music-dock{position:fixed;right:18px;bottom:18px;z-index:99999;display:flex;align-items:center;gap:9px;padding:8px 9px 8px 14px;border:1px solid rgba(255,255,255,.14);border-radius:999px;background:rgba(9,10,22,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 10px 30px rgba(0,0,0,.28);transition:transform .3s ease,box-shadow .3s ease,background .3s ease}.music-dock:hover{transform:none}
+.music-dock-label{font:500 10px/1 'Space Mono',monospace;letter-spacing:.06em;color:rgba(255,255,255,.72);white-space:nowrap}.music-dock button{width:32px;height:32px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.16);border-radius:50%;background:rgba(233,165,169,.16);color:#fff;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.2);-webkit-tap-highlight-color:transparent}.music-dock button:hover{background:rgba(233,165,169,.28)}.music-dock button svg{width:16px;height:16px}.music-dock:has(#music-toggle[aria-pressed="true"]){box-shadow:0 12px 30px rgba(233,165,169,.14)}.music-dock:hover{transform:translateY(-2px)}
 .music-dock:has(#music-toggle[aria-pressed="true"]){box-shadow:0 12px 30px rgba(233,165,169,.14)}
 .music-dock-label{transition:opacity .3s ease}
 #music-toggle{position:relative;overflow:visible}
@@ -334,8 +334,17 @@
 .fake-romance-close{position:absolute;top:7px;right:9px;border:0;background:transparent;color:rgba(255,255,255,.45);font-size:18px;line-height:1;cursor:pointer;padding:4px}.fake-romance-close:hover{color:#fff}
 @media(max-width:600px){.fake-romance-notification{top:14px;right:14px;width:calc(100vw - 28px);padding:13px 14px}.fake-romance-message{font-size:13px}.fake-romance-icon{width:38px;height:38px;flex-basis:38px}}
 @media(prefers-reduced-motion:reduce){.fake-romance-notification{transition:opacity .2s ease,transform .2s ease}}
+
+/* Final music control cleanup */
+.music-dock{gap:6px!important;padding:5px!important;border:none!important;box-shadow:none!important;background:rgba(9,10,22,.72)!important;}
+
+#music-toggle{width:32px!important;height:32px!important;min-width:32px!important;padding:0!important;border-radius:50%!important;font-size:13px!important;box-shadow:none!important;animation:none!important;}
+#music-toggle::before,#music-toggle::after{display:none!important;content:none!important;animation:none!important;}
+.music-dock::before,.music-dock::after{display:none!important;content:none!important;animation:none!important;}
+#music-toggle i{width:15px!important;height:15px!important;}
 </style>
-</head>
+<link rel="preload" as="audio" href="assets/lagu/di-akhir-perang.mp3">
+ </head>
  <body data-template-id="__page-root">
   <div class="shooting-stars" aria-hidden="true">
    <span style="--left:8%;--duration:8s;--delay:2s;--trail:90px"></span>
@@ -347,7 +356,7 @@
    <span id="music-label" class="music-dock-label">Semua Aku Dirayakan</span>
    <button id="music-toggle" type="button" aria-label="Mute musik" aria-pressed="true"><i data-lucide="volume-2"></i></button>
   </div>
-   <audio id="bg-music" src="assets/lagu/semua-aku-dirayakan.mp3" autoplay loop preload="auto"></audio>
+   <audio id="bg-music" src="assets/lagu/semua-aku-dirayakan.mp3" preload="auto"></audio>
   <div id="opening" class="opening">
    <div class="opening-orbit"></div>
    <div class="relative z-10 px-6">
@@ -796,9 +805,37 @@ Selalu kamu.
       const opening=document.getElementById("opening");
       const existingBgMusic=document.getElementById("bg-music");
       existingBgMusic.volume=1;
-      const startMusic=()=>{const promise=existingBgMusic.play();if(promise&&typeof promise.catch==="function")promise.catch(()=>{});};
-      startMusic();
-      document.getElementById("open-surprise").addEventListener("click",()=>{startMusic();opening.classList.add("is-open");document.getElementById("universe").scrollIntoView({behavior:"smooth"})});
+      const musicLabel=document.getElementById("music-label");
+      const playlist=[
+        {src:"assets/lagu/semua-aku-dirayakan.mp3",name:"Semua Aku Dirayakan"},
+        {src:"assets/lagu/di-akhir-perang.mp3",name:"Di Akhir Perang"}
+      ];
+      let currentSong=0;
+      let musicStarted=false;
+      const playCurrentSong=()=>{
+        const song=playlist[currentSong];
+        existingBgMusic.src=song.src;
+        if(musicLabel)musicLabel.textContent=song.name;
+        existingBgMusic.load();
+        const promise=existingBgMusic.play();
+        musicStarted=true;
+        if(promise&&typeof promise.catch==="function")promise.catch(()=>{});
+      };
+      const startMusic=()=>{
+        const promise=existingBgMusic.play();
+        musicStarted=true;
+        if(promise&&typeof promise.catch==="function")promise.catch(()=>{});
+      };
+      existingBgMusic.addEventListener("ended",()=>{
+        currentSong=(currentSong+1)%playlist.length;
+        playCurrentSong();
+      });
+      if(musicLabel)musicLabel.textContent=playlist[currentSong].name;
+      document.getElementById("open-surprise").addEventListener("click",()=>{
+        startMusic();
+        opening.classList.add("is-open");
+        document.getElementById("universe").scrollIntoView({behavior:"smooth"})
+      });
 
       let current=0,lastRead=0,readerSize=18,widthMode=0,bookmarked=null,illustrationVisible=true;
       const modal=document.getElementById("reader-modal"),paper=document.getElementById("reader-paper"),readerMain=document.getElementById("reader-main"),toc=document.getElementById("toc-list"),readerToc=document.getElementById("reader-toc-list"),sidebar=document.getElementById("reader-sidebar");
@@ -1015,12 +1052,12 @@ document.addEventListener('DOMContentLoaded',()=>{
   const messages=[
     ['💕','Kamu selalu jadi orang favoritku.'],
     ['🤗','Jangan pernah merasa sendiri yaa sayang'],
-    ['🌙','Kalau sekarang kamu lagi senyum, berarti misiku berhasil.'],
+    ['😚','Kalau sekarang sayang lagi senyum, berarti misiku berhasil.'],
     ['🥺','Jangan lupa istirahat ya, sayang.'],
-    ['💌','Ada seseorang yang beruntung banget bisa punya kamu.'],
+    ['💌','Aku beruntung banget bisa punya kamu.'],
     ['❤️','I love you in every universe.'],
     ['🫶','Makasih udah tetap di sini.'],
-    ['✨','Psst… sayangku cantik banget.']
+    ['😍','Psst… sayangku cantik banget.']
   ];
   let hideTimer=null,nextTimer=null,used=[];
   const randomMessage=()=>{
