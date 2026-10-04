@@ -283,11 +283,9 @@
 .music-dock{position:fixed;right:18px;bottom:18px;z-index:99999;display:flex;align-items:center;gap:9px;padding:8px 9px 8px 14px;border:1px solid rgba(255,255,255,.14);border-radius:999px;background:rgba(9,10,22,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 10px 30px rgba(0,0,0,.28);transition:transform .3s ease,box-shadow .3s ease,background .3s ease}.music-dock:hover{transform:none}
 .music-dock-label{font:500 10px/1 'Space Mono',monospace;letter-spacing:.06em;color:rgba(255,255,255,.72);white-space:nowrap}.music-dock button{width:32px;height:32px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.16);border-radius:50%;background:rgba(233,165,169,.16);color:#fff;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.2);-webkit-tap-highlight-color:transparent}.music-dock button:hover{background:rgba(233,165,169,.28)}.music-dock button svg{width:16px;height:16px}.music-dock:has(#music-toggle[aria-pressed="true"]){box-shadow:0 12px 30px rgba(233,165,169,.14)}.music-dock:hover{transform:translateY(-2px)}
 .music-dock:has(#music-toggle[aria-pressed="true"]){box-shadow:0 12px 30px rgba(233,165,169,.14)}
-.music-dock-label{transition:opacity .3s ease}
+.music-dock-label{transition:opacity .45s ease,transform .45s ease;opacity:0;transform:translateY(4px);pointer-events:none}.music-dock.show-track .music-dock-label{opacity:1;transform:none}
 #music-toggle{position:relative;overflow:visible}
-#music-toggle:after{content:"";position:absolute;right:-7px;bottom:2px;width:10px;height:12px;background:linear-gradient(to top,rgba(245,216,161,.35) 25%,transparent 25%);border-radius:2px;opacity:0;transform:scaleY(.7);transition:opacity .25s ease}
-.music-playing #music-toggle:after{opacity:1;animation:musicBars .9s ease-in-out infinite alternate}
-@keyframes musicBars{from{box-shadow:0 0 0 rgba(0,0,0,0);height:7px}to{box-shadow:-4px -2px 0 -2px rgba(245,216,161,.7),4px -4px 0 -2px rgba(233,165,169,.7);height:13px}}
+to{box-shadow:-4px -2px 0 -2px rgba(245,216,161,.7),4px -4px 0 -2px rgba(233,165,169,.7);height:13px}}
 .polaroid{transition:transform .35s ease,box-shadow .35s ease,filter .35s ease!important}.polaroid:hover{filter:brightness(1.035);box-shadow:0 22px 46px rgba(0,0,0,.34)!important}
 .envelope{transition:transform .45s ease,box-shadow .45s ease}.envelope:not(.open):hover{transform:translateY(-4px);box-shadow:0 34px 68px rgba(0,0,0,.4)}
 .envelope.open .wax{transform:scale(.88);opacity:.15;transition:.35s ease}.envelope.open .envelope-flap{transition:transform .9s cubic-bezier(.2,.75,.2,1)}
@@ -336,7 +334,8 @@
 @media(prefers-reduced-motion:reduce){.fake-romance-notification{transition:opacity .2s ease,transform .2s ease}}
 
 /* Final music control cleanup */
-.music-dock{gap:6px!important;padding:5px!important;border:none!important;box-shadow:none!important;background:rgba(9,10,22,.72)!important;}
+.music-dock{gap:6px!important;padding:5px!important;border:none!important;box-shadow:none!important;background:transparent!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;transition:background .45s ease,box-shadow .45s ease!important;}
+.music-dock.show-track{background:rgba(9,10,22,.72)!important;box-shadow:0 10px 30px rgba(0,0,0,.28)!important;backdrop-filter:blur(14px)!important;-webkit-backdrop-filter:blur(14px)!important;}
 
 #music-toggle{width:32px!important;height:32px!important;min-width:32px!important;padding:0!important;border-radius:50%!important;font-size:13px!important;box-shadow:none!important;animation:none!important;}
 #music-toggle::before,#music-toggle::after{display:none!important;content:none!important;animation:none!important;}
@@ -812,11 +811,20 @@ Selalu kamu.
       ];
       let currentSong=0;
       let musicStarted=false;
+      const musicDock=document.querySelector('.music-dock');
+      let labelTimer=null;
+      const showTrackLabel=()=>{
+        if(!musicDock||!musicLabel)return;
+        musicLabel.textContent=playlist[currentSong].name;
+        musicDock.classList.add('show-track');
+        clearTimeout(labelTimer);
+        labelTimer=setTimeout(()=>musicDock.classList.remove('show-track'),10000);
+      };
       const playCurrentSong=()=>{
         const song=playlist[currentSong];
         existingBgMusic.src=song.src;
-        if(musicLabel)musicLabel.textContent=song.name;
         existingBgMusic.load();
+        showTrackLabel();
         const promise=existingBgMusic.play();
         musicStarted=true;
         if(promise&&typeof promise.catch==="function")promise.catch(()=>{});
@@ -830,8 +838,8 @@ Selalu kamu.
         currentSong=(currentSong+1)%playlist.length;
         playCurrentSong();
       });
-      if(musicLabel)musicLabel.textContent=playlist[currentSong].name;
       document.getElementById("open-surprise").addEventListener("click",()=>{
+        showTrackLabel();
         startMusic();
         opening.classList.add("is-open");
         document.getElementById("universe").scrollIntoView({behavior:"smooth"})
@@ -1054,7 +1062,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     ['🤗','Jangan pernah merasa sendiri yaa sayang'],
     ['😚','Kalau sekarang sayang lagi senyum, berarti misiku berhasil.'],
     ['🥺','Jangan lupa istirahat ya, sayang.'],
-    ['💌','Aku beruntung banget bisa punya kamu.'],
+    ['💌','Ada seseorang yang beruntung banget bisa punya kamu.'],
     ['❤️','I love you in every universe.'],
     ['🫶','Makasih udah tetap di sini.'],
     ['😍','Psst… sayangku cantik banget.']
@@ -1085,4 +1093,5 @@ document.addEventListener('DOMContentLoaded',()=>{
   nextTimer=setTimeout(()=>{if(!document.hidden)show();schedule()},12000);
 });
 </script>
+
 </body></html>
