@@ -279,7 +279,9 @@
 .page-section.in-view{opacity:1;transform:none}
 .universe-indicator{position:absolute;inset:50% auto auto 50%;transform:translate(-50%,-50%);width:116px;height:116px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;z-index:2;pointer-events:none;color:#f5d8a1;background:radial-gradient(circle,rgba(245,216,161,.08),rgba(9,10,22,0) 70%);text-shadow:0 0 16px rgba(245,216,161,.28)}
 .universe-indicator span{font-family:Georgia,serif;font-size:14px;font-style:italic;letter-spacing:.02em}.universe-indicator small{font-size:9px;letter-spacing:.18em;text-transform:uppercase;opacity:.55}
-.music-dock{transition:transform .3s ease,box-shadow .3s ease,background .3s ease}.music-dock:hover{transform:translateY(-2px)}
+/* Visible music control: fixed on top of every section and opening screen */
+.music-dock{position:fixed;right:18px;bottom:18px;z-index:99999;display:flex;align-items:center;gap:9px;padding:8px 9px 8px 14px;border:1px solid rgba(255,255,255,.14);border-radius:999px;background:rgba(9,10,22,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 10px 30px rgba(0,0,0,.28);transition:transform .3s ease,box-shadow .3s ease,background .3s ease}.music-dock:hover{transform:translateY(-2px)}
+.music-dock-label{font:500 10px/1 'Space Mono',monospace;letter-spacing:.06em;color:rgba(255,255,255,.72);white-space:nowrap}.music-dock button{width:38px;height:38px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.16);border-radius:50%;background:rgba(233,165,169,.16);color:#fff;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.2);-webkit-tap-highlight-color:transparent}.music-dock button:hover{background:rgba(233,165,169,.28)}.music-dock button svg{width:18px;height:18px}.music-dock:has(#music-toggle[aria-pressed="true"]){box-shadow:0 12px 30px rgba(233,165,169,.14)}.music-dock:hover{transform:translateY(-2px)}
 .music-dock:has(#music-toggle[aria-pressed="true"]){box-shadow:0 12px 30px rgba(233,165,169,.14)}
 .music-dock-label{transition:opacity .3s ease}
 #music-toggle{position:relative;overflow:visible}
@@ -292,7 +294,7 @@
 .letter.show{animation:letterCinematic .85s cubic-bezier(.2,.75,.2,1) both}
 @keyframes letterCinematic{0%{opacity:0;transform:translateY(-22px) scale(.985);filter:blur(2px)}65%{opacity:1;transform:translateY(4px) scale(1.002);filter:blur(0)}100%{transform:none}}
 @media(prefers-reduced-motion:reduce){.shooting-stars{transform:none!important}.page-section,.page-section.reveal-ready,.page-section.in-view{transition:none!important;transform:none!important;opacity:1!important}.shooting-stars .twinkle-star{animation:none!important}.music-playing #music-toggle:after{animation:none!important}}
-@media(max-width:720px){.universe-indicator{width:94px;height:94px}.universe-indicator span{font-size:12px}.universe-indicator small{font-size:7px}.music-dock-label{max-width:135px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
+@media(max-width:720px){.music-dock{right:12px;bottom:12px}.music-dock-label{max-width:135px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.universe-indicator{width:94px;height:94px}.universe-indicator span{font-size:12px}.universe-indicator small{font-size:7px}.music-dock-label{max-width:135px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
 
 
 /* Final cinematic polish: atmosphere, cursor depth, progress, micro-copy, finale, audio fade */
@@ -315,13 +317,25 @@
 @media(max-width:720px){.scroll-progress{right:6px;height:60px}.micro-copy{font-size:8px}.micro-copy-two{left:5%;bottom:12%}.memories-film-grain,.finale-film-grain{opacity:.035}}
 @media(pointer:coarse),(prefers-reduced-motion:reduce){.cursor-star{display:none}.meteor{animation:none!important;display:none}.cinematic-glow:before{animation:none}.memories-film-grain,.finale-film-grain{animation:none}.scroll-progress{opacity:.55}}
 
+
 </style>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.577.0/dist/umd/lucide.min.js" type="text/javascript"></script>
   <script src="https://cdn.tailwindcss.com/3.4.17" type="text/javascript"></script>
   <script src="/_sdk/6c2ecc939521f244.data_sdk.js" type="text/javascript" integrity="sha512-gRx8s+XsZDN6mSIQu2sivLZysbV0WHhb5kXNUWlgVb5lCMU1foJYukyMEDPv8Tnoocb8iwqB4XdRrWc7oEGzIQ=="></script>
   <script src="/_sdk/b443124ed7f67435.editing_sdk.js" type="text/javascript" integrity="sha512-oLX1dpTmN2mZumhKQc0okubrUJ8MqA6c5fM5NHln6+9t8KpYrcElyL7NOV7dV6pLkMWSzWZRFAI+WLGRVrl64A=="></script>
   <script src="/_sdk/ab4336f91e694f96.resizing_sdk.js" type="text/javascript" integrity="sha512-cxmeUrBrNlwwLr+tEu/iwM5F3boeK4qDMoH3QjUPqJptkO5NkaDVhQvyIHIn+3EflI5/uubWzkSA78B1tCswgA=="></script>
- </head>
+ 
+<style>
+/* Fake romantic notifications */
+.fake-romance-notification{position:fixed;top:24px;right:24px;width:min(360px,calc(100vw - 32px));z-index:9998;display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border:1px solid rgba(255,255,255,.14);border-radius:18px;background:rgba(18,20,34,.88);box-shadow:0 18px 55px rgba(0,0,0,.38),0 0 30px rgba(255,185,210,.08);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);color:#fff;opacity:0;transform:translate3d(120%,0,0) scale(.96);pointer-events:none;transition:opacity .55s ease,transform .65s cubic-bezier(.22,1,.36,1)}
+.fake-romance-notification.is-visible{opacity:1;transform:translate3d(0,0,0)}
+.fake-romance-icon{width:40px;height:40px;flex:0 0 40px;display:grid;place-items:center;border-radius:13px;background:rgba(255,255,255,.08);font-size:21px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.07)}
+.fake-romance-copy{min-width:0;padding-top:1px}.fake-romance-label{font:600 10px/1.2 'Space Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:5px}.fake-romance-message{font:500 14px/1.45 'DM Sans',sans-serif;color:rgba(255,255,255,.94)}
+.fake-romance-close{position:absolute;top:7px;right:9px;border:0;background:transparent;color:rgba(255,255,255,.45);font-size:18px;line-height:1;cursor:pointer;padding:4px}.fake-romance-close:hover{color:#fff}
+@media(max-width:600px){.fake-romance-notification{top:14px;right:14px;width:calc(100vw - 28px);padding:13px 14px}.fake-romance-message{font-size:13px}.fake-romance-icon{width:38px;height:38px;flex-basis:38px}}
+@media(prefers-reduced-motion:reduce){.fake-romance-notification{transition:opacity .2s ease,transform .2s ease}}
+</style>
+</head>
  <body data-template-id="__page-root">
   <div class="shooting-stars" aria-hidden="true">
    <span style="--left:8%;--duration:8s;--delay:2s;--trail:90px"></span>
@@ -331,7 +345,7 @@
   </div>
   <div class="music-dock" aria-label="Kontrol musik">
    <span id="music-label" class="music-dock-label">Semua Aku Dirayakan</span>
-   <button id="music-toggle" type="button" aria-label="Jeda musik" aria-pressed="true"><i data-lucide="volume-2"></i></button>
+   <button id="music-toggle" type="button" aria-label="Mute musik" aria-pressed="true"><i data-lucide="volume-2"></i></button>
   </div>
    <audio id="bg-music" src="assets/lagu/semua-aku-dirayakan.mp3" autoplay loop preload="auto"></audio>
   <div id="opening" class="opening">
@@ -765,9 +779,9 @@ Selalu kamu.
       // Balanced enhancements: no existing section/layout is moved or resized.
       const bgMusic=document.getElementById("bg-music");
       const musicToggle=document.getElementById("music-toggle");
-      const musicIcon=()=>{musicToggle.innerHTML=`<i data-lucide="${bgMusic.paused?"volume-x":"volume-2"}"></i>`;musicToggle.setAttribute("aria-label",bgMusic.paused?"Putar musik":"Jeda musik");musicToggle.setAttribute("aria-pressed",String(!bgMusic.paused));if(window.lucide)lucide.createIcons()};
-      musicToggle.addEventListener("click",()=>{if(bgMusic.paused){bgMusic.play().catch(()=>{});}else{bgMusic.pause();}musicIcon()});
-      bgMusic.addEventListener("play",musicIcon);bgMusic.addEventListener("pause",musicIcon);musicIcon();
+      const musicIcon=()=>{const muted=bgMusic.muted;musicToggle.innerHTML=`<i data-lucide="${muted?"volume-x":"volume-2"}"></i>`;musicToggle.setAttribute("aria-label",muted?"Nyalakan suara musik":"Mute musik");musicToggle.setAttribute("aria-pressed",String(!muted));if(window.lucide)lucide.createIcons()};
+      musicToggle.addEventListener("click",()=>{bgMusic.muted=!bgMusic.muted;if(bgMusic.paused){bgMusic.play().catch(()=>{});}musicIcon()});
+      bgMusic.addEventListener("volumechange",musicIcon);bgMusic.addEventListener("play",musicIcon);musicIcon();
 
       // Reader timeline mirrors the existing seven manuscript chapters.
       const readerPaper=document.getElementById("reader-paper");
@@ -977,4 +991,61 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 </script>
 
+<script>
+</script>
+
+
+<div id="fake-romance-notification" class="fake-romance-notification" aria-live="polite" aria-hidden="true">
+  <div id="fake-romance-icon" class="fake-romance-icon">💕</div>
+  <div class="fake-romance-copy">
+    <div class="fake-romance-label">Sayangkuu</div>
+    <div id="fake-romance-message" class="fake-romance-message"></div>
+  </div>
+  <button id="fake-romance-close" class="fake-romance-close" type="button" aria-label="Tutup notifikasi">×</button>
+</div>
+<script>
+/* Fake Romantic Notifications — independent feature */
+document.addEventListener('DOMContentLoaded',()=>{
+  const notification=document.getElementById('fake-romance-notification');
+  const messageEl=document.getElementById('fake-romance-message');
+  const iconEl=document.getElementById('fake-romance-icon');
+  const close=document.getElementById('fake-romance-close');
+  if(!notification||!messageEl||!iconEl)return;
+
+  const messages=[
+    ['💕','Kamu selalu jadi orang favoritku.'],
+    ['🤗','Jangan pernah merasa sendiri yaa sayang'],
+    ['🌙','Kalau sekarang kamu lagi senyum, berarti misiku berhasil.'],
+    ['🥺','Jangan lupa istirahat ya, sayang.'],
+    ['💌','Ada seseorang yang beruntung banget bisa punya kamu.'],
+    ['❤️','I love you in every universe.'],
+    ['🫶','Makasih udah tetap di sini.'],
+    ['✨','Psst… sayangku cantik banget.']
+  ];
+  let hideTimer=null,nextTimer=null,used=[];
+  const randomMessage=()=>{
+    if(used.length===messages.length)used=[];
+    const available=messages.map((_,i)=>i).filter(i=>!used.includes(i));
+    const i=available[Math.floor(Math.random()*available.length)];
+    used.push(i); return messages[i];
+  };
+  const hide=()=>{clearTimeout(hideTimer);notification.classList.remove('is-visible');notification.setAttribute('aria-hidden','true')};
+  const show=()=>{
+    const [icon,message]=randomMessage();
+    iconEl.textContent=icon; messageEl.textContent=message;
+    notification.classList.remove('is-visible');
+    notification.setAttribute('aria-hidden','false');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>notification.classList.add('is-visible')));
+    clearTimeout(hideTimer); hideTimer=setTimeout(hide,5600);
+  };
+  const schedule=()=>{
+    clearTimeout(nextTimer);
+    nextTimer=setTimeout(()=>{if(!document.hidden)show();schedule()},22000+Math.random()*18000);
+  };
+  close.addEventListener('click',()=>{hide();schedule()});
+
+  // First notification appears after the visitor has had time to explore.
+  nextTimer=setTimeout(()=>{if(!document.hidden)show();schedule()},12000);
+});
+</script>
 </body></html>
