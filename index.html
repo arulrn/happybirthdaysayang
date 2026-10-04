@@ -786,4 +786,27 @@ Selalu kamu.
     });
   </script>
  
+
+  <script>
+    // Lock browser zoom on touch devices while keeping normal vertical scrolling.
+    // The viewport meta tag handles most browsers; these guards cover iOS Safari.
+    (function(){
+      let lastTouchEnd = 0;
+      document.addEventListener('gesturestart', function(e){ e.preventDefault(); }, {passive:false});
+      document.addEventListener('gesturechange', function(e){ e.preventDefault(); }, {passive:false});
+      document.addEventListener('gestureend', function(e){ e.preventDefault(); }, {passive:false});
+      document.addEventListener('touchmove', function(e){
+        if (e.touches && e.touches.length > 1) e.preventDefault();
+      }, {passive:false});
+      document.addEventListener('touchend', function(e){
+        const now = Date.now();
+        if (now - lastTouchEnd <= 320) e.preventDefault();
+        lastTouchEnd = now;
+      }, {passive:false});
+      document.addEventListener('dblclick', function(e){ e.preventDefault(); }, {passive:false});
+      document.addEventListener('wheel', function(e){
+        if (e.ctrlKey) e.preventDefault();
+      }, {passive:false});
+    })();
+  </script>
 </body></html>
