@@ -341,6 +341,58 @@ to{box-shadow:-4px -2px 0 -2px rgba(245,216,161,.7),4px -4px 0 -2px rgba(233,165
 #music-toggle::before,#music-toggle::after{display:none!important;content:none!important;animation:none!important;}
 .music-dock::before,.music-dock::after{display:none!important;content:none!important;animation:none!important;}
 #music-toggle i{width:15px!important;height:15px!important;}
+
+/* OUR CHAT — intimate conversation section */
+.our-chat-wrap{width:min(100%,430px);margin:2.5rem auto 0;position:relative}
+.our-chat-phone{position:relative;overflow:hidden;border:1px solid rgba(245,216,161,.25);border-radius:30px;background:linear-gradient(180deg,rgba(27,25,43,.98),rgba(11,13,28,.99));box-shadow:0 30px 90px rgba(0,0,0,.45),0 0 45px rgba(233,165,169,.08);text-align:left}
+.our-chat-phone:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 15% 8%,rgba(245,216,161,.08),transparent 28%),radial-gradient(circle at 90% 75%,rgba(233,165,169,.08),transparent 32%);pointer-events:none}
+.our-chat-top{position:relative;z-index:1;display:flex;align-items:center;gap:.75rem;padding:1rem 1.1rem;border-bottom:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.035);backdrop-filter:blur(12px)}
+.our-chat-avatar{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#e9c28d,#d99aa3);color:#251827;font-weight:800;box-shadow:0 0 22px rgba(233,165,169,.2)}
+.our-chat-name{color:#fff4e8;font-weight:700;font-size:.9rem}.our-chat-online{color:#bfb1bd;font-size:.67rem;margin-top:.1rem}
+.our-chat-messages{position:relative;z-index:1;padding:1rem .85rem 1.1rem;min-height:390px;max-height:490px;overflow:auto;scroll-behavior:smooth}
+.our-chat-date{width:max-content;margin:.1rem auto 1rem;padding:.35rem .7rem;border-radius:999px;background:rgba(255,255,255,.06);color:#aaa0ab;font-size:.6rem;letter-spacing:.06em}
+.our-chat-row{display:flex;margin:.52rem 0;animation:chatIn .45s ease both}.our-chat-row.her{justify-content:flex-start}.our-chat-row.me{justify-content:flex-end}
+.our-chat-bubble{max-width:78%;padding:.68rem .82rem .52rem;border-radius:17px;line-height:1.45;font-size:.76rem;box-shadow:0 8px 20px rgba(0,0,0,.16)}
+.our-chat-row.her .our-chat-bubble{background:#29253a;color:#eee5ea;border-top-left-radius:6px}.our-chat-row.me .our-chat-bubble{background:linear-gradient(145deg,#6d465b,#57405d);color:#fff4ec;border-top-right-radius:6px}
+.our-chat-meta{display:block;margin-top:.28rem;text-align:right;font-size:.52rem;color:rgba(255,255,255,.52)}
+.our-chat-voice-static{min-width:230px;display:grid;grid-template-columns:32px 1fr;column-gap:8px;align-items:center}.voice-play{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.13);font-size:.7rem}.voice-bars{font-size:.48rem;letter-spacing:1px;white-space:nowrap;overflow:hidden;opacity:.8}.voice-time{grid-column:2;font-size:.55rem;opacity:.65;margin-top:-2px}.our-chat-sticker{font-size:3rem;line-height:1;padding:.5rem .7rem;background:transparent!important;box-shadow:none!important}
+.our-chat-typing{display:none;align-items:center;gap:4px;width:max-content;margin:.3rem 0;padding:.62rem .75rem;border-radius:15px 15px 15px 5px;background:#29253a}.our-chat-typing.show{display:flex}
+.our-chat-typing i{width:4px;height:4px;border-radius:50%;background:#bdb1bc;animation:chatDot 1s infinite}.our-chat-typing i:nth-child(2){animation-delay:.15s}.our-chat-typing i:nth-child(3){animation-delay:.3s}
+.our-chat-bottom{position:relative;z-index:1;padding:.8rem;border-top:1px solid rgba(255,255,255,.07);display:flex;gap:.55rem}.our-chat-replay{flex:1;border:1px solid rgba(245,216,161,.25);border-radius:999px;background:rgba(255,255,255,.045);color:#d9cbd1;padding:.65rem 1rem;font-size:.7rem;cursor:pointer;transition:.25s}.our-chat-replay:hover{background:rgba(245,216,161,.1);border-color:rgba(245,216,161,.45)}
+
+.our-chat-sticker{background:transparent!important;box-shadow:none!important;padding:.15rem!important;max-width:145px!important}
+.our-chat-sticker img{display:block;width:125px;height:auto;max-height:145px;object-fit:contain;border:0;border-radius:0;background:transparent}
+.our-chat-sticker-emoji{background:transparent!important;box-shadow:none!important;padding:.15rem!important;font-size:4rem!important;line-height:1!important}
+.our-chat-next{flex:1;border:1px solid rgba(233,165,169,.42);border-radius:999px;background:linear-gradient(145deg,#6d465b,#57405d);color:#fff4ec;padding:.65rem 1rem;font-size:.7rem;font-weight:700;cursor:pointer;transition:.25s}
+.our-chat-next:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(233,165,169,.16)}
+.our-chat-next[hidden]{display:none}
+@media(max-width:430px){.our-chat-bottom{flex-wrap:wrap}.our-chat-replay,.our-chat-next{min-width:0}}
+
+.our-chat-hint{margin-top:1rem;color:#9d929d;font-size:.68rem;text-align:center;font-style:italic}
+@keyframes chatIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}@keyframes chatDot{0%,60%,100%{opacity:.25;transform:translateY(0)}30%{opacity:1;transform:translateY(-2px)}}
+@media(max-width:430px){.our-chat-phone{border-radius:24px}.our-chat-messages{min-height:360px;max-height:455px}.our-chat-bubble{max-width:84%;font-size:.72rem}.our-chat-wrap{margin-top:2rem}}
+
+/* Before You / After You */
+.before-after-section{position:relative;overflow:hidden;padding:clamp(5rem,9vw,8rem) 1rem;background:radial-gradient(circle at 50% 10%,rgba(231,189,129,.09),transparent 38%),linear-gradient(180deg,rgba(8,10,25,.1),rgba(8,10,25,.45));}
+.before-after-wrap{width:min(1100px,100%);margin:auto;text-align:center;}
+.before-after-kicker{color:#e7bd81;letter-spacing:.22em;text-transform:uppercase;font-size:.72rem;font-weight:700;margin-bottom:.8rem;}
+.before-after-title{margin:0;font-size:clamp(2rem,6vw,4rem);line-height:1.02;color:#f7eee8;font-weight:700;}
+.before-after-subtitle{max-width:650px;margin:1rem auto 2.5rem;color:#cfc3cb;line-height:1.8;font-size:.98rem;}
+.before-after-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:clamp(.7rem,2vw,1.5rem);align-items:stretch;text-align:left;}
+.before-after-card{position:relative;padding:clamp(1.35rem,3vw,2.25rem);border:1px solid rgba(255,255,255,.12);border-radius:26px;background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.025));box-shadow:0 25px 70px rgba(0,0,0,.22);backdrop-filter:blur(12px);transition:transform .45s ease,border-color .45s ease,box-shadow .45s ease;}
+.before-after-card:hover{transform:translateY(-7px);border-color:rgba(231,189,129,.38);box-shadow:0 30px 85px rgba(0,0,0,.3);}
+.before-after-card h3{margin:0 0 .8rem;font-size:1.15rem;letter-spacing:.08em;text-transform:uppercase;}
+.before-after-card.before h3{color:#aaa3ad;}.before-after-card.after h3{color:#e9c28d;}
+.before-after-card p{margin:0;color:#e6dfe3;line-height:1.9;font-size:.95rem;}
+.before-after-list{display:grid;gap:.8rem;margin-top:1.35rem;}
+.before-after-item{padding:.9rem 1rem;border-radius:15px;background:rgba(0,0,0,.12);border:1px solid rgba(255,255,255,.07);color:#d8cfd5;font-size:.88rem;line-height:1.55;}
+.before-after-card.after .before-after-item{border-color:rgba(231,189,129,.13);}
+.before-after-arrow{align-self:center;width:52px;height:52px;border:1px solid rgba(231,189,129,.4);border-radius:50%;display:grid;place-items:center;color:#f5d8a1;background:rgba(231,189,129,.07);font-size:1.2rem;box-shadow:0 0 35px rgba(231,189,129,.08);}
+.before-after-quote{max-width:760px;margin:3rem auto 0;padding:1.8rem 1.5rem;border-top:1px solid rgba(231,189,129,.18);border-bottom:1px solid rgba(231,189,129,.18);}
+.before-after-quote p{margin:.35rem 0;color:#eee5e9;line-height:1.9;font-size:clamp(1rem,2vw,1.2rem);}.before-after-quote p:last-child{color:#f1d49e;font-weight:600;}
+.before-after-btn{margin-top:2rem;border:1px solid rgba(231,189,129,.5);background:rgba(231,189,129,.08);color:#f5d8a1;border-radius:999px;padding:.85rem 1.35rem;font-weight:700;cursor:pointer;transition:.3s;box-shadow:0 8px 30px rgba(0,0,0,.16);}.before-after-btn:hover{transform:translateY(-2px);background:rgba(231,189,129,.15);}
+.before-after-more{max-height:0;opacity:0;overflow:hidden;transition:max-height .8s ease,opacity .6s ease;margin:auto;max-width:760px;}.before-after-more.open{max-height:500px;opacity:1;}.before-after-more-inner{margin-top:1.5rem;padding:1.5rem;border-radius:22px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.09);color:#dcd3d8;line-height:1.9;}
+@media(max-width:720px){.before-after-grid{grid-template-columns:1fr;}.before-after-arrow{transform:rotate(90deg);margin:.1rem auto;}.before-after-card:hover{transform:none;}.before-after-section{padding-left:.9rem;padding-right:.9rem;}}
 </style>
 <link rel="preload" as="audio" href="assets/lagu/di-akhir-perang.mp3">
  </head>
@@ -359,13 +411,13 @@ to{box-shadow:-4px -2px 0 -2px rgba(245,216,161,.7),4px -4px 0 -2px rgba(233,165
   <div id="opening" class="opening">
    <div class="opening-orbit"></div>
    <div class="relative z-10 px-6">
-    <p data-template-id="opening-copy" class="canva-text serif text-3xl italic sm:text-5xl" style="color: rgb(255, 244, 232); font-weight: 400; font-style: italic; font-size: 16px;">Untuk sayangkuu, ada sebuah kisah yang ingin Syahrul Ramadhan rayakan malam ini…</p>
+    <p data-template-id="opening-copy" class="canva-text serif text-3xl italic sm:text-5xl" style="color: rgb(255, 244, 232); font-weight: 400; font-style: italic; font-size: 16px;">Untuk sayangkuu, ada sebuah kisah yang ingin aku rayakan malam ini…</p>
     <p data-template-id="opening-subcopy" class="canva-text mt-5 text-[#d8c8ce]" style="color: rgb(216, 200, 206); font-weight: 400; font-style: normal; font-size: 16px;">Sebuah perjalanan kecil, sebuah buku, dan banyak doa yang ditulis dengan sepenuh hati.</p><button id="open-surprise" data-template-id="open-surprise-button" class="canva-button rose-button mt-9 rounded-full px-7 py-4 font-bold" style="background: rgb(233, 165, 169); color: rgb(26, 16, 32); font-weight: 700; font-style: normal; font-size: 16px;">Buka kisah kita ✨</button>
    </div>
   </div>
   <header class="fixed top-0 z-40 w-full border-b border-white/10 bg-[#090a16]/80 backdrop-blur-xl">
    <nav class="nav-scroller mx-auto flex max-w-6xl items-center justify-between gap-5 px-4 py-3" aria-label="Navigasi cerita"><a href="#universe" data-template-id="nav-brand" class="canva-link serif text-lg italic" style="color: rgb(242, 210, 155); font-weight: 400; font-style: italic; font-size: 16px;">Us, in a little universe</a>
-    <div class="flex items-center gap-4"><a class="nav-link" href="#novel">Novel Kita</a> <a class="nav-link" href="#reasons">Kenapa Aku Memilihmu</a> <a class="nav-link" href="#memories">Kenangan</a> <a class="nav-link" href="#letter">Surat</a>
+    <div class="flex items-center gap-4"><a class="nav-link" href="#novel">Novel Kita</a> <a class="nav-link" href="#reasons">Kenapa Aku Memilihmu</a> <a class="nav-link" href="#memories">Kenangan</a> <a class="nav-link" href="#our-chat">Our Chat</a> <a class="nav-link" href="#letter">Surat</a>
     </div>
    </nav>
   </header>
@@ -468,7 +520,7 @@ to{box-shadow:-4px -2px 0 -2px rgba(245,216,161,.7),4px -4px 0 -2px rgba(233,165
      <div class="mt-10 grid grid-cols-2 gap-5 md:grid-cols-3">
       <article class="polaroid rotate-[-4deg]">
        <img data-template-id="memory-photo-1" class="canva-image" loading="lazy" src="assets/memories/memories1.jpg" alt="Sayangku.">
-       <p data-template-id="memory-caption-1" class="canva-text mt-3 text-sm" style="color: rgb(56, 45, 50); font-weight: 400; font-style: normal; font-size: 16px;">Awal sebuah cerita</p>
+       <p data-template-id="memory-caption-1" class="canva-text mt-3 text-sm" style="color: rgb(56, 45, 50); font-weight: 400; font-style: normal; font-size: 16px;"> sebuah cerita</p>
       </article>
       <article class="polaroid rotate-[3deg] mt-7">
        <img data-template-id="memory-photo-2" class="canva-image" loading="lazy" src="assets/memories/memories2.jpg" alt="Sayangku.">
@@ -490,6 +542,30 @@ to{box-shadow:-4px -2px 0 -2px rgba(245,216,161,.7),4px -4px 0 -2px rgba(233,165
        <img data-template-id="memory-photo-6" class="canva-image" loading="lazy" src="assets/memories/memories6.jpg" alt="Sayangku.">
        <p data-template-id="memory-caption-6" class="canva-text mt-3 text-sm" style="color: rgb(56, 45, 50); font-weight: 400; font-style: normal; font-size: 16px;">Ramen with you</p>
       </article>
+     </div>
+    </div>
+   </section>
+   <section id="our-chat" class="page-section flex items-center">
+    <div class="mx-auto w-full max-w-5xl text-center">
+     <p class="eyebrow">Potongan percakapan yang mengubah segalanya</p>
+     <h2 class="serif mt-3 text-4xl sm:text-6xl" style="color:rgb(255,244,232);font-weight:600;font-size:24px">Our Chat</h2>
+     <p class="mx-auto mt-5 max-w-2xl" style="color:rgb(215,201,210)">Sebelum semuanya menjadi cerita, ada dua orang yang hanya saling bertukar pesan di balik layar.</p>
+     <div class="our-chat-wrap">
+      <div class="our-chat-phone" aria-label="Percakapan kalian">
+       <div class="our-chat-top">
+        <div class="our-chat-avatar">♡</div>
+        <div><div class="our-chat-name">Sayangkuu</div><div class="our-chat-online" id="our-chat-status">our little conversation</div></div>
+       </div>
+       <div class="our-chat-messages" id="our-chat-messages">
+        <div class="our-chat-date" id="our-chat-date">11 DES · 22.17</div>
+        <div class="our-chat-typing" id="our-chat-typing"><i></i><i></i><i></i></div>
+       </div>
+       <div class="our-chat-bottom">
+        <button class="our-chat-replay" id="our-chat-replay" type="button">Putar lagi percakapan ✨</button>
+        <button class="our-chat-next" id="our-chat-next" type="button" hidden>Berikutnya →</button>
+       </div>
+      </div>
+      <p class="our-chat-hint" id="our-chat-hint">Tunggu sampai chat pertama selesai…</p>
      </div>
     </div>
    </section>
@@ -1094,4 +1170,162 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 </script>
 
+
+<script>
+/* Our Chat — first screenshot conversation, then the existing conversation */
+document.addEventListener('DOMContentLoaded',()=>{
+  const box=document.getElementById('our-chat-messages');
+  const typing=document.getElementById('our-chat-typing');
+  const replay=document.getElementById('our-chat-replay');
+  const next=document.getElementById('our-chat-next');
+  const status=document.getElementById('our-chat-status');
+  const date=document.getElementById('our-chat-date');
+  const hint=document.getElementById('our-chat-hint');
+  if(!box||!typing||!replay||!next)return;
+
+  const firstConversation=[
+    ['me','Talk to me 🙂‍↔️','22.17 ✓✓'],
+    ['her','Aure','22.17'],
+    ['her','Sure','22.17'],
+    ['her','I want','22.17'],
+    ['me','__VOICE__','22.17 ✓✓'],
+    ['me','__STICKER_EMOJI__','22.17 ✓✓'],
+    ['her','haha mulai dri mna ni','22.17'],
+    ['me','Shappp senyaman nya kamu','22.17 ✓✓'],
+    ['her','Yuu tlf','22.17']
+  ];
+
+  const existingConversation=[
+    ['me','Hallo ka mut','13.50 ✓✓'],
+    ['me','Ini no ku yaa arul','13.51 ✓✓'],
+    ['her','Arul siapa','13.51'],
+    ['me','Hmmm','14.00 ✓✓'],
+    ['me','Yg diig','14.00 ✓✓'],
+    ['me','__VOICE_EXISTING__','14.00 ✓✓'],
+    ['her','Oh kamuuo','14.03'],
+    ['me','__STICKER__','14.03 ✓✓'],
+    ['her','Sorry ya','14.42'],
+    ['me','Iyaa dimaapin kaa','14.45 ✓✓']
+  ];
+
+  let timer;
+  let stage=0;
+  const wait=ms=>new Promise(r=>setTimeout(r,ms));
+
+  const clearRows=()=>{
+    [...box.querySelectorAll('.our-chat-row')].forEach(e=>e.remove());
+    typing.classList.remove('show');
+    box.scrollTop=0;
+  };
+
+  const add=(who,text,time)=>{
+    const row=document.createElement('div');
+    row.className='our-chat-row '+who;
+    row.innerHTML='<div class="our-chat-bubble"></div>';
+    const bubble=row.firstElementChild;
+
+    if(text==='__STICKER_EMOJI__'){
+      bubble.classList.add('our-chat-sticker','our-chat-sticker-emoji');
+      bubble.textContent='🙂‍↔️';
+    }else if(text==='__VOICE__' || text==='__VOICE_EXISTING__'){
+      bubble.classList.add('our-chat-voice-static');
+      bubble.innerHTML='<span class="voice-play">▶</span><span class="voice-bars">▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮</span><span class="voice-time">'+(text==='__VOICE__'?'0.04':'0.03')+'</span>';
+    }else if(text==='__STICKER__'){
+      bubble.classList.add('our-chat-sticker');
+      bubble.innerHTML='<img src="assets/img/sticker.jpg" alt="sticker">';
+    }else{
+      bubble.textContent=text;
+    }
+
+    const meta=document.createElement('span');
+    meta.className='our-chat-meta';
+    meta.textContent=time;
+    bubble.appendChild(meta);
+    box.insertBefore(row,typing);
+    box.scrollTop=box.scrollHeight;
+  };
+
+  async function playConversation(conversation, isFirst){
+    if(replay.disabled)return;
+    clearTimeout(timer);
+    replay.disabled=true;
+    next.hidden=true;
+    replay.style.opacity='.55';
+    status.textContent='typing…';
+    clearRows();
+
+    for(let i=0;i<conversation.length;i++){
+      const [who,text,time]=conversation[i];
+      if(who==='her'){
+        typing.classList.add('show');
+        box.scrollTop=box.scrollHeight;
+        await wait(i===0?900:700);
+        typing.classList.remove('show');
+      }else{
+        await wait(450);
+      }
+      add(who,text,time);
+      await wait(650);
+    }
+
+    status.textContent='our little conversation';
+    replay.disabled=false;
+    replay.style.opacity='1';
+
+    if(isFirst){
+      stage=1;
+      next.hidden=false;
+      hint.textContent='Kalau sudah siap, lanjut ke chat berikutnya ✨';
+      replay.textContent='Ulangi chat pertama';
+    }else{
+      stage=2;
+      hint.textContent='Dan dari sini, cerita kita terus berjalan.';
+      replay.textContent='Ulangi percakapan ✨';
+    }
+  }
+
+  replay.addEventListener('click',()=>{
+    // Tombol ulangi selalu mengembalikan cerita ke chat pertama.
+    stage=0;
+    date.textContent='11 DES · 22.17';
+    hint.textContent='Mengulang dari chat pertama…';
+    replay.textContent='Ulangi chat pertama';
+    playConversation(firstConversation,true);
+  });
+
+  next.addEventListener('click',()=>{
+    if(stage!==1)return;
+    date.textContent='AWAL KITA · 13.50';
+    hint.textContent='Chat berikutnya…';
+    playConversation(existingConversation,false);
+  });
+
+  const observer=new IntersectionObserver(entries=>{
+    if(entries[0].isIntersecting && stage===0) playConversation(firstConversation,true);
+  },{threshold:.35});
+  observer.observe(box.closest('#our-chat'));
+});
+</script>
+
+
+<section id="before-after" class="before-after-section" aria-label="Before You After You">
+  <div class="before-after-wrap">
+    <div class="before-after-kicker">A chapter about you</div>
+    <h2 class="before-after-title">Before You / After You</h2>
+    <p class="before-after-subtitle">Bukan tentang hidup yang dulu salah. Hanya tentang bagaimana satu orang bisa datang, lalu membuat hari-hari yang sama terasa berbeda.</p>
+    <div class="before-after-grid">
+      <article class="before-after-card before"><h3>Before You</h3><p>Aku terbiasa dengan malam yang sama. Hari-hari berjalan seperti biasa, tanpa seseorang yang benar-benar ingin kutunggu.</p><div class="before-after-list"><div class="before-after-item">Malam cuma malam.</div><div class="before-after-item">Hari berjalan begitu saja.</div><div class="before-after-item">Nggak banyak cerita yang ingin kubagikan.</div><div class="before-after-item">Aku terbiasa menyimpan banyak hal sendiri.</div></div></article>
+      <div class="before-after-arrow" aria-hidden="true">→</div>
+      <article class="before-after-card after"><h3>After You</h3><p>Sampai kamu datang. Tiba-tiba ada seseorang yang ingin aku kabari, ada suara yang ingin aku dengar, dan ada satu nama yang terasa seperti rumah.</p><div class="before-after-list"><div class="before-after-item">Malam jadi waktu untuk menunggu kabarmu.</div><div class="before-after-item">Hari berikutnya terasa layak ditunggu.</div><div class="before-after-item">Selalu ada cerita tentang kita.</div><div class="before-after-item">Dari “aku” perlahan berubah menjadi “kita”.</div></div></article>
+    </div>
+    <div class="before-after-quote"><p>“Aku nggak tahu apakah hidupku berubah karena kamu datang…</p><p>atau karena sejak kamu datang, aku akhirnya melihat hidup dengan cara yang berbeda.”</p></div>
+    <button id="before-after-btn" class="before-after-btn" type="button">Lihat apa yang berubah →</button>
+    <div id="before-after-more" class="before-after-more" aria-hidden="true"><div class="before-after-more-inner">Ternyata perubahan terbesar bukan tentang menjadi orang lain.<br><br>Aku masih aku. Kamu masih kamu.<br>Tapi sekarang ada seseorang yang membuat hal-hal kecil terasa berarti.<br><br>Dan kalau ditanya apa yang paling berubah sejak kamu datang…<br><strong style="color:#f1d49e">aku punya alasan untuk percaya bahwa “pulang” kadang-kadang bisa berbentuk seseorang.</strong> ❤️</div></div>
+  </div>
+</section>
+
+<script>
+/* Before You / After You — independent feature */
+document.addEventListener('DOMContentLoaded',()=>{const btn=document.getElementById('before-after-btn'),more=document.getElementById('before-after-more');if(!btn||!more)return;btn.addEventListener('click',()=>{const open=more.classList.toggle('open');more.setAttribute('aria-hidden',String(!open));btn.textContent=open?'Tutup bagian ini ↑':'Lihat apa yang berubah →';if(open)setTimeout(()=>more.scrollIntoView({behavior:'smooth',block:'center'}),80);});});
+</script>
 </body></html>
