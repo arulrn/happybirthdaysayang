@@ -719,14 +719,30 @@ body:has(#reader-modal.show) .music-dock{left:auto!important;right:12px!importan
      </div>
      <p data-template-id="birthday-eyebrow" class="canva-text eyebrow" style="color: rgb(231, 189, 129); font-weight: 700; font-style: normal; font-size: 16px;">Untuk hari yang paling manis</p>
      <h2 data-template-id="birthday-title" class="canva-text serif mt-3 text-4xl sm:text-6xl" style="color: rgb(255, 244, 232); font-weight: 600; font-style: normal; font-size: 24px;">11 Oktober untuk sayangkuu</h2><img class="birthday-hero-photo" src="assets/img/birthday-sayang.jpg" alt="Happy Birthday Sayang">
-     <div id="birthday-status" class="birthday-countdown mt-6" aria-live="polite" aria-label="Hitung mundur menuju 11 Oktober">
-      <div class="countdown-item"><span id="count-days">00</span><small>Hari</small></div>
-      <div class="countdown-sep">:</div>
-      <div class="countdown-item"><span id="count-hours">00</span><small>Jam</small></div>
-      <div class="countdown-sep">:</div>
-      <div class="countdown-item"><span id="count-minutes">00</span><small>Menit</small></div>
-      <div class="countdown-sep">:</div>
-      <div class="countdown-item"><span id="count-seconds">00</span><small>Detik</small></div>
+     <div class="mt-6">
+      <p class="canva-text serif text-xl" style="color:#f7dfb2;font-weight:600;">🎂 Hari Ini — Selamat Ulang Tahun ke-20 Calon Istriku❤️</p>
+      <div id="birthday-status" class="birthday-countdown mt-3" aria-live="polite" aria-label="Ulang tahun ke-20 pada 11 Oktober 2026">
+       <div class="countdown-item"><span id="today-days">00</span><small>Hari</small></div>
+       <div class="countdown-sep">:</div>
+       <div class="countdown-item"><span id="today-hours">00</span><small>Jam</small></div>
+       <div class="countdown-sep">:</div>
+       <div class="countdown-item"><span id="today-minutes">00</span><small>Menit</small></div>
+       <div class="countdown-sep">:</div>
+       <div class="countdown-item"><span id="today-seconds">00</span><small>Detik</small></div>
+      </div>
+     </div>
+     <div class="mt-7">
+      <p class="canva-text serif text-xl" style="color:#f7dfb2;font-weight:600;">🎂 Menuju Ulang Tahun ke-21 Istriku❤️</p>
+      <p class="canva-text mt-2 text-sm" style="color:#cdbfc6;">11 Oktober 2027</p>
+      <div id="next-birthday-status" class="birthday-countdown mt-3" aria-live="polite" aria-label="Hitung mundur menuju ulang tahun ke-21 pada 11 Oktober 2027">
+       <div class="countdown-item"><span id="next-days">00</span><small>Hari</small></div>
+       <div class="countdown-sep">:</div>
+       <div class="countdown-item"><span id="next-hours">00</span><small>Jam</small></div>
+       <div class="countdown-sep">:</div>
+       <div class="countdown-item"><span id="next-minutes">00</span><small>Menit</small></div>
+       <div class="countdown-sep">:</div>
+       <div class="countdown-item"><span id="next-seconds">00</span><small>Detik</small></div>
+      </div>
      </div><button id="birthday-open" data-template-id="birthday-open-button" type="button" class="canva-button rose-button mt-7 rounded-full px-7 py-3 font-bold" aria-expanded="false" style="background: rgb(233, 165, 169); color: rgb(26, 16, 32); font-weight: 700; font-style: normal; font-size: 16px;">Buka Ucapan</button>
      <article id="birthday-card" class="birthday-card" hidden="">
       <p data-template-id="birthday-card-kicker" class="canva-text eyebrow" style="color: rgb(231, 189, 129); font-weight: 700; font-style: normal; font-size: 16px;">Untuk Muto, dari Arul</p>
@@ -1193,23 +1209,32 @@ Selalu kamu.
       document.addEventListener("keydown",e=>{if(e.key==="Escape"){if(invitationModal.classList.contains("show"))closeInvitation();else if(modal.classList.contains("show"))closeReader();else if(letter.classList.contains("show"))document.getElementById("letter-close").click()}});
 
       function countdown(){
-        const now=new Date(),year=now.getFullYear();
-        let target=new Date(`${year}-10-11T00:00:00+07:00`);
-        if(target<=now)target=new Date(`${year+1}-10-11T00:00:00+07:00`);
-        const tick=()=>{
-          const diff=Math.max(0,target-new Date());
-          const totalSeconds=Math.floor(diff/1000);
-          const days=Math.floor(totalSeconds/86400);
-          const hours=Math.floor(totalSeconds%86400/3600);
-          const minutes=Math.floor(totalSeconds%3600/60);
-          const seconds=totalSeconds%60;
-          document.getElementById("count-days").textContent=String(days).padStart(2,"0");
-          document.getElementById("count-hours").textContent=String(hours).padStart(2,"0");
-          document.getElementById("count-minutes").textContent=String(minutes).padStart(2,"0");
-          document.getElementById("count-seconds").textContent=String(seconds).padStart(2,"0");
+        // Ulang tahun ke-20: 11 Oktober 2026 (berhenti di nol setelah hari H).
+        const birthday20 = new Date("2026-10-11T00:00:00+07:00");
+        // Ulang tahun ke-21: 11 Oktober 2027.
+        const birthday21 = new Date("2027-10-11T00:00:00+07:00");
+
+        function updateTimer(target, prefix){
+          const diff = Math.max(0, target.getTime() - Date.now());
+          const totalSeconds = Math.floor(diff / 1000);
+          const days = Math.floor(totalSeconds / 86400);
+          const hours = Math.floor((totalSeconds % 86400) / 3600);
+          const minutes = Math.floor((totalSeconds % 3600) / 60);
+          const seconds = totalSeconds % 60;
+          document.getElementById(`${prefix}-days`).textContent = String(days).padStart(2,"0");
+          document.getElementById(`${prefix}-hours`).textContent = String(hours).padStart(2,"0");
+          document.getElementById(`${prefix}-minutes`).textContent = String(minutes).padStart(2,"0");
+          document.getElementById(`${prefix}-seconds`).textContent = String(seconds).padStart(2,"0");
+        }
+
+        const tick = () => {
+          updateTimer(birthday20, "today");
+          updateTimer(birthday21, "next");
         };
-        tick();setInterval(tick,1000);
-      }countdown();
+        tick();
+        setInterval(tick, 1000);
+      }
+      countdown();
       const birthdayOpen=document.getElementById("birthday-open"),birthdayClose=document.getElementById("birthday-close"),birthdayCard=document.getElementById("birthday-card");
       const invitationModal=document.getElementById("invitation-modal"),invitationOpen=document.getElementById("invitation-open"),invitationClose=document.getElementById("invitation-close");
       function closeInvitation(){invitationModal.classList.remove("show");invitationOpen.focus()}
