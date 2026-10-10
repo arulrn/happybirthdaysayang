@@ -488,31 +488,40 @@ body:has(#reader-modal.show) .music-dock{left:auto!important;right:12px!importan
 
 
 <style id="make-a-wish-styles">
-/* Make a Wish — self-contained feature; keeps existing sections and controls intact. */
+/* Sequential birthday Make a Wish experience; isolated from the rest of the page. */
 .make-wish-section{position:relative;isolation:isolate;overflow:hidden;width:min(100%,650px);margin:2.5rem auto 1.5rem;padding:clamp(1.4rem,4vw,2.4rem);text-align:center;border:1px solid rgba(194,168,255,.2);border-radius:28px;background:radial-gradient(ellipse at 50% 0%,rgba(124,92,190,.19),transparent 60%),linear-gradient(150deg,rgba(24,22,51,.92),rgba(11,15,34,.94));box-shadow:0 18px 55px rgba(0,0,0,.2)}
 .make-wish-eyebrow{margin:0;color:#d8c5ff;font:600 .65rem/1.5 "Space Mono",monospace;letter-spacing:.2em}
 .make-wish-title{margin:.65rem 0 0;color:#fff4f8;font-size:clamp(1.5rem,4.8vw,2.15rem);font-weight:500}
-.make-wish-copy{max-width:420px;margin:.85rem auto 0;color:rgba(241,232,255,.76);font-size:.9rem;line-height:1.8}
-.make-wish-star{position:relative;display:grid;place-items:center;width:96px;height:96px;margin:1.4rem auto .6rem;border:1px solid rgba(222,203,255,.28);border-radius:50%;color:#f7e5ff;background:radial-gradient(circle,rgba(177,141,255,.18),rgba(255,255,255,.025) 68%);font-size:2.8rem;cursor:pointer;transition:transform .25s ease,box-shadow .25s ease;box-shadow:0 0 32px rgba(163,123,255,.12);animation:wishStarFloat 3.5s ease-in-out infinite}
-.make-wish-star:before{content:"";position:absolute;width:118px;height:1px;transform:rotate(-35deg) translateX(-7px);transform-origin:center;background:linear-gradient(90deg,transparent,rgba(220,201,255,.8),transparent);pointer-events:none}
-.make-wish-star:hover,.make-wish-star:focus-visible{transform:scale(1.07) rotate(-5deg);box-shadow:0 0 38px rgba(163,123,255,.24);outline:2px solid rgba(220,201,255,.65);outline-offset:5px}
-.make-wish-hint{color:rgba(225,212,255,.65);font-size:.73rem;letter-spacing:.04em}
-.make-wish-form{max-width:460px;margin:1.3rem auto 0;text-align:left;animation:wishReveal .45s ease both}
-.make-wish-form[hidden],.make-wish-result[hidden]{display:none}
+.make-wish-copy{max-width:440px;margin:.85rem auto 0;color:rgba(241,232,255,.76);font-size:.9rem;line-height:1.8}
+.make-wish-stage{max-width:470px;margin:1.3rem auto 0;animation:wishReveal .5s ease both}
+.make-wish-stage[hidden],.make-wish-form[hidden],.make-wish-result[hidden]{display:none!important}
+.make-wish-stage-title{margin:0;color:#f1dcff;font:italic 1.25rem "Playfair Display",Georgia,serif}
+.make-wish-action{display:inline-block;margin-top:1rem;padding:.8rem 1.2rem;border:1px solid rgba(220,201,255,.28);border-radius:999px;color:#20152f;background:linear-gradient(135deg,#e7d5ff,#f4d7e8);font-weight:650;cursor:pointer;transition:transform .2s ease,filter .2s ease}
+.make-wish-action:hover{transform:translateY(-1px);filter:brightness(1.06)}
+.make-wish-cake{position:relative;width:180px;height:148px;margin:1rem auto .8rem}
+.make-wish-cake-base{position:absolute;left:22px;bottom:8px;width:136px;height:68px;border-radius:12px 12px 18px 18px;background:linear-gradient(90deg,#e6a8bf,#ffe2e9 48%,#d88cab);box-shadow:inset 0 -10px rgba(160,70,112,.12),0 12px 24px rgba(0,0,0,.18)}
+.make-wish-cake-base:before{content:"";position:absolute;left:0;right:0;top:0;height:22px;border-radius:12px 12px 10px 10px;background:repeating-radial-gradient(ellipse at 12px 2px,#fff0f4 0 9px,transparent 10px 18px)}
+.make-wish-cake-top{position:absolute;left:32px;bottom:70px;width:116px;height:30px;border-radius:50%;background:#ffeaf0;border:3px solid #f4c8d8}
+.make-wish-candle{position:absolute;bottom:96px;width:8px;height:33px;border-radius:4px;background:repeating-linear-gradient(135deg,#fff 0 5px,#d8b9ff 5px 10px);z-index:2}
+.make-wish-candle:nth-child(1){left:65px}.make-wish-candle:nth-child(2){left:86px;height:40px}.make-wish-candle:nth-child(3){left:107px}
+.make-wish-flame{position:absolute;top:-15px;left:0;width:8px;height:13px;border-radius:70% 30% 60% 40%;background:#ffd36a;box-shadow:0 0 14px #ffc857;animation:flameFlicker .7s ease-in-out infinite alternate;transform:rotate(8deg)}
+.make-wish-cake.blown .make-wish-flame{display:none}.make-wish-cake.blown .make-wish-candle{opacity:.65}
+.make-wish-confetti{font-size:1.65rem;letter-spacing:.4rem;animation:confettiPop .9s ease both}
+.make-wish-letter{padding:1.25rem;border:1px solid rgba(255,220,235,.22);border-radius:18px;background:linear-gradient(140deg,rgba(255,235,244,.1),rgba(255,255,255,.035));color:#f8eaf4;line-height:1.9;text-align:left;white-space:pre-line}
+.make-wish-form{max-width:460px;margin:1rem auto 0;text-align:left;animation:wishReveal .45s ease both}
 .make-wish-label{display:block;margin-bottom:.55rem;color:#f0e5ff;font-size:.9rem}
 .make-wish-input{display:block;width:100%;min-height:112px;resize:vertical;padding:13px 14px;border:1px solid rgba(218,199,255,.22);border-radius:14px;color:#fff5ff;background:rgba(255,255,255,.045);font:inherit;font-size:.9rem;line-height:1.7;outline:none}
-.make-wish-input::placeholder{color:rgba(232,221,250,.42)}
-.make-wish-input:focus{border-color:rgba(218,199,255,.6);box-shadow:0 0 0 3px rgba(163,123,255,.1)}
+.make-wish-input::placeholder{color:rgba(232,221,250,.42)}.make-wish-input:focus{border-color:rgba(218,199,255,.6);box-shadow:0 0 0 3px rgba(163,123,255,.1)}
 .make-wish-submit{display:block;width:100%;margin-top:.75rem;padding:.85rem 1rem;border:1px solid rgba(220,201,255,.28);border-radius:999px;color:#20152f;background:linear-gradient(135deg,#e7d5ff,#f4d7e8);font-weight:650;cursor:pointer;transition:transform .2s ease,filter .2s ease}
-.make-wish-submit:hover{transform:translateY(-1px);filter:brightness(1.05)}
-.make-wish-result{max-width:450px;margin:1.35rem auto 0;padding:1.15rem;border:1px solid rgba(220,201,255,.18);border-radius:18px;background:rgba(255,255,255,.045);animation:wishReveal .5s ease both}
-.make-wish-result-title{margin:0;color:#e8d8ff;font:italic 1.25rem "Playfair Display",Georgia,serif}
-.make-wish-result-text{margin:.7rem 0 0;color:#f4e9f8;font-size:.9rem;line-height:1.85;overflow-wrap:anywhere}
-.make-wish-reset{margin-top:.85rem;padding:.45rem .8rem;border:1px solid rgba(220,201,255,.18);border-radius:999px;color:rgba(240,226,255,.8);background:transparent;font-size:.78rem;cursor:pointer}
-@keyframes wishStarFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.make-wish-submit:hover{transform:translateY(-1px);filter:brightness(1.05)}.make-wish-submit:disabled{opacity:.65;cursor:wait}
+.make-wish-result{max-width:450px;margin:1.1rem auto 0;padding:1.15rem;border:1px solid rgba(220,201,255,.18);border-radius:18px;background:rgba(255,255,255,.045);animation:wishReveal .5s ease both}
+.make-wish-result-title{margin:0;color:#e8d8ff;font:italic 1.25rem "Playfair Display",Georgia,serif}.make-wish-result-text{margin:.7rem 0 0;color:#f4e9f8;font-size:.9rem;line-height:1.85;overflow-wrap:anywhere}
+.make-wish-hint{color:rgba(225,212,255,.65);font-size:.73rem;letter-spacing:.04em;margin-top:1rem}
+@keyframes flameFlicker{from{transform:rotate(-5deg) scale(.94)}to{transform:rotate(7deg) scale(1.08)}}
+@keyframes confettiPop{0%{opacity:0;transform:translateY(10px) scale(.7)}70%{opacity:1;transform:translateY(-4px) scale(1.08)}100%{opacity:1;transform:translateY(0) scale(1)}}
 @keyframes wishReveal{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-@media(max-width:420px){.make-wish-section{padding:1.35rem 1rem;border-radius:22px}.make-wish-star{width:82px;height:82px;font-size:2.45rem}.make-wish-star:before{width:105px}}
-@media(prefers-reduced-motion:reduce){.make-wish-star{animation:none}.make-wish-form,.make-wish-result{animation:none}.make-wish-submit,.make-wish-star{transition:none}}
+@media(max-width:420px){.make-wish-section{padding:1.35rem 1rem;border-radius:22px}.make-wish-cake{transform:scale(.92);margin-top:.6rem;margin-bottom:.2rem}}
+@media(prefers-reduced-motion:reduce){.make-wish-stage,.make-wish-confetti,.make-wish-flame{animation:none}.make-wish-action,.make-wish-submit{transition:none}}
 </style>
 
 </head>
@@ -699,7 +708,8 @@ body:has(#reader-modal.show) .music-dock{left:auto!important;right:12px!importan
       <p data-template-id="letter-greeting" class="canva-text serif text-3xl italic" style="color: rgb(74, 48, 52); font-weight: 400; font-style: italic; font-size: 16px;">Untuk sayangkuu,</p>
       <p data-template-id="letter-body-1" class="canva-text mt-6 leading-8" style="color: rgb(74, 48, 52); font-weight: 400; font-style: normal; font-size: 16px;">Selamat ulang tahun, sayangku ❤️Hari ini adalah hari yang sangat istimewa buatku, karena di hari inilah seseorang yang begitu berarti dalam hidupku dilahirkan. Seseorang yang sudah melewati begitu banyak hal dalam hidupnya untuk bisa sampai di titik ini.Aku tahu perjalananmu tidak selalu mudah. Ada banyak hal yang mungkin tidak semua orang tahu. Ada hari-hari ketika kamu harus terlihat kuat, padahal sebenarnya kamu sedang lelah. Ada air mata yang mungkin kamu sembunyikan, ada kekecewaan, kegagalan, masalah, dan berbagai keadaan yang pernah membuatmu merasa ingin menyerah.Tapi kamu tetap bertahan. Kamu tetap bangkit dan terus berjalan sampai hari ini.Dan aku ingin kamu tahu, aku bangga sama kamu.Aku mungkin tidak hadir di setiap bagian dari perjalananmu sejak awal. Aku tidak tahu semua hal yang pernah kamu lalui dan semua luka yang pernah kamu simpan sendiri. Tapi aku menghargai setiap perjuanganmu. Aku menghargai bagaimana kamu bisa tetap menjadi dirimu meskipun hidup pernah memberikanmu banyak alasan untuk menyerah.Terima kasih kepada dirimu yang dulu karena sudah bertahan sampai akhirnya aku bisa mengenal dan mencintai perempuan seperti kamu hari ini.Di ulang tahunmu ini, aku berdoa semoga Allah menyembuhkan semua luka yang masih tersisa, mengganti semua lelahmu dengan ketenangan, semua air matamu dengan kebahagiaan, dan semua perjuanganmu dengan sesuatu yang jauh lebih indah.Semoga Allah memberikanmu kesehatan, umur yang panjang dan penuh keberkahan, rezeki yang luas, hati yang tenang, serta kemudahan dalam setiap langkahmu. Semoga semua impian dan doa-doamu perlahan menjadi kenyataan.Kalau selama ini kamu terbiasa menghadapi banyak hal sendiri, semoga mulai sekarang kamu tahu bahwa ada aku yang ingin menemanimu. Aku ingin ada bukan hanya ketika kamu bahagia, tapi juga ketika kamu sedang lelah, sedih, kecewa, atau merasa dunia sedang terlalu berat.Aku ingin menjadi tempatmu bercerita, tempatmu bersandar, dan seseorang yang tetap menggenggam tanganmu ketika keadaan tidak mudah.Aku tidak bisa mengubah masa lalumu atau menghapus semua hal yang pernah membuatmu sakit. Tapi kalau Allah mengizinkan aku menjadi bagian dari masa depanmu, aku ingin membuat perjalananmu setelah ini lebih indah.Aku ingin menemanimu mengejar impian, mendukungmu dalam setiap langkah, dan merayakan setiap keberhasilanmu. Aku juga ingin kita belajar menghadapi setiap masalah bersama, bukan saling meninggalkan ketika keadaan sedang sulit.Aku memang tidak sempurna dan mungkin nantinya akan ada kesalahan yang aku lakukan. Tapi aku akan terus belajar menjadi pasangan yang bisa membuatmu merasa dicintai, dihargai, dijaga, dan tidak sendirian.Semoga suatu hari nanti kita bisa melihat kembali semua perjalanan yang sudah kita lewati, lalu tersenyum dan berkata, “Ternyata kita berhasil melewati semuanya.”Aku ingin merayakan lebih banyak ulang tahun bersamamu. Tahun depan, tahun-tahun berikutnya, sampai kita sama-sama tua nanti. Sampai rambut kita memutih dan kita masih bisa duduk berdua sambil mengingat semua cerita yang pernah kita lalui.Selamat ulang tahun, calon istriku sayang. ❤️Terima kasih sudah bertahan sampai sejauh ini. Terima kasih sudah hadir dalam hidupku. Dan terima kasih karena dari sekian panjang perjalanan hidupmu, Allah mempertemukan perjalananmu dengan perjalanan hidupku.Semoga setelah ini lebih banyak bahagia daripada sedih dalam hidupmu.Aku mencintaimu, hari ini, besok, dan sampai tua nanti.<br> I LOVE YOU MORE, SAYANGKU 🤍🤍🤍🤍🤍</p>
       <p data-template-id="letter-body-2" class="canva-text mt-5 leading-8" style="color: rgb(74, 48, 52); font-weight: 400; font-style: normal; font-size: 16px;">Semoga kita selalu diberi jalan untuk saling menjaga, tumbuh dalam kebaikan, dan melangkah dengan hati yang sama-sama tulus.</p>
-      <p data-template-id="letter-signature" class="canva-text serif mt-8 text-2xl italic" style="color: rgb(74, 48, 52); font-weight: 400; font-style: italic; font-size: 16px;">Dengan seluruh hati, Syahrul Ramadhan</p>
+      <p data-template-id="letter-signature" class="canva-text serif mt-8 text-2xl italic" style="color: rgb(74, 48, 52); font-weight: 400; font-style: italic; font-size: 16px;">Dengan seluruh hati, Your future husband❤️</p>
+      <button id="letter-make-wish-continue" type="button" class="canva-button rose-button mt-7 rounded-full px-7 py-3 font-bold" style="background: rgb(233, 165, 169); color: rgb(26, 16, 32); font-weight: 700; font-size: 16px;">Lanjutkan kejutan 💌</button>
      </article>
     </div>
    </section>
@@ -749,7 +759,7 @@ body:has(#reader-modal.show) .music-dock{left:auto!important;right:12px!importan
       <p data-template-id="final-line-1" class="canva-text serif text-2xl italic text-[#d9c8d0]" style="color: rgb(217, 200, 208); font-weight: 400; font-style: italic; font-size: 16px;">Aku tidak tahu seperti apa semua hari di depan kita…</p>
       <p data-template-id="final-line-2" class="canva-text serif mt-5 text-2xl italic text-[#d9c8d0]" style="color: rgb(217, 200, 208); font-weight: 400; font-style: italic; font-size: 16px;">Tapi aku tahu siapa yang ingin selalu ada di sisiku.</p>
       <p data-template-id="final-you" class="canva-text serif mt-7 text-6xl text-[#f2cf92]" style="color: rgb(242, 207, 146); font-weight: 600; font-style: normal; font-size: 16px;">sayangkuu. ❤️</p>
-      <p data-template-id="final-closing" class="canva-text mx-auto mt-10 max-w-2xl leading-8 text-[#f0e2e2]" style="color: rgb(240, 226, 226); font-weight: 400; font-style: normal; font-size: 16px;">Selamat ulang tahun, sayangkuu. Semoga setiap langkahmu dijaga dalam kebaikan, setiap doamu menemukan jalannya, dan kisah kita selalu diberi ruang untuk tumbuh dengan sabar. — Syahrul Ramadhan</p><button id="return-home" data-template-id="return-home-button" type="button" class="canva-button return-home mt-8" style="color: rgb(241, 212, 158); font-weight: 600; font-style: normal; font-size: 16px;">Kembali ke Awal</button>
+      <p data-template-id="final-closing" class="canva-text mx-auto mt-10 max-w-2xl leading-8 text-[#f0e2e2]" style="color: rgb(240, 226, 226); font-weight: 400; font-style: normal; font-size: 16px;">Selamat ulang tahun, sayangkuu. Semoga setiap langkahmu dijaga dalam kebaikan, setiap doamu menemukan jalannya, dan kisah kita selalu diberi ruang untuk tumbuh dengan sabar. — Calon Suamimu❤️</p><button id="return-home" data-template-id="return-home-button" type="button" class="canva-button return-home mt-8" style="color: rgb(241, 212, 158); font-weight: 600; font-style: normal; font-size: 16px;">Kembali ke Awal</button>
      </div>
     </div>
    </section>
@@ -775,25 +785,48 @@ body:has(#reader-modal.show) .music-dock{left:auto!important;right:12px!importan
       </div>
       <p class="anniversary-note">Satu tanggal sederhana, dengan seseorang yang ingin aku pilih berkali-kali. ❤️</p>
      </section>
-   <!-- Make a Wish feature, placed after the anniversary counter. -->
+   <!-- Sequential Make a Wish birthday experience. -->
    <section id="make-a-wish" class="make-wish-section" aria-labelledby="make-wish-title">
-    <p class="make-wish-eyebrow">✦ A LITTLE WISH FOR US ✦</p>
-    <h2 id="make-wish-title" class="serif make-wish-title">Make a Wish <span aria-hidden="true">🌠</span></h2>
-    <p class="make-wish-copy">Ada satu bintang jatuh buat kita. Pejamkan mata sebentar, pikirkan satu harapan kecil untuk hubungan kita, lalu sentuh bintangnya, sayang.</p>
-    <button id="make-wish-star" class="make-wish-star" type="button" aria-label="Sentuh bintang jatuh untuk membuat harapan" aria-expanded="false" aria-controls="make-wish-form">✦</button>
-    <p class="make-wish-hint" id="make-wish-hint">sentuh bintangnya untuk mulai ✨</p>
-    <form id="make-wish-form" class="make-wish-form" hidden>
-     <label class="make-wish-label" for="make-wish-input">Apa satu harapan yang paling kamu inginkan untuk kita? 💗</label>
-     <textarea id="make-wish-input" class="make-wish-input" maxlength="500" placeholder="Tulis harapan kamu di sini..." required></textarea>
-     <button class="make-wish-submit" type="submit">Kirim harapan ke Arul ✉️</button>
-    </form>
-    <div id="make-wish-result" class="make-wish-result" hidden aria-live="polite">
-     <p class="make-wish-result-title">Semoga semesta mendengar harapanmu. ❤️</p>
-     <p id="make-wish-result-text" class="make-wish-result-text"></p>
-     <p id="make-wish-email-status" class="make-wish-result-text">Harapanmu akan dikirim langsung lewat email. ❤️</p>
-     <p class="make-wish-result-text">Aku nggak tahu semua hal yang akan kita temui nanti, tapi aku mau terus berusaha supaya kita bisa menciptakan lebih banyak alasan untuk bahagia bersama. Pelan-pelan, ya sayang. Kita jaga harapan ini bareng-bareng. 🫶🏻</p>
-     <button id="make-wish-again" class="make-wish-reset" type="button">Buat harapan lagi</button>
+    <p class="make-wish-eyebrow">✦ A BIRTHDAY WISH FOR YOU ✦</p>
+    <h2 id="make-wish-title" class="serif make-wish-title">Make a Wish <span aria-hidden="true">🎂</span></h2>
+    <p class="make-wish-copy">Ada kejutan kecil yang aku siapkan untukmu, sayang. Ikuti satu per satu, ya. Semoga hari ulang tahunmu dipenuhi hal-hal baik. ❤️</p>
+
+    <div id="make-wish-stage-cake" class="make-wish-stage">
+     <p class="make-wish-stage-title">Langkah 1 · Make a Birthday Wish</p>
+     <div id="make-wish-cake" class="make-wish-cake" role="img" aria-label="Kue ulang tahun dengan tiga lilin menyala">
+      <span class="make-wish-candle"><i class="make-wish-flame"></i></span><span class="make-wish-candle"><i class="make-wish-flame"></i></span><span class="make-wish-candle"><i class="make-wish-flame"></i></span>
+      <div class="make-wish-cake-top"></div><div class="make-wish-cake-base"></div>
+     </div>
+     <p class="make-wish-copy">Pejamkan mata sebentar, pikirkan satu harapan, lalu tekan tombol di bawah untuk meniup lilinnya.</p>
+     <button id="make-wish-blow" class="make-wish-action" type="button">Tiup lilinnya ✨</button>
     </div>
+
+    <div id="make-wish-stage-surprise" class="make-wish-stage" hidden>
+     <p class="make-wish-stage-title">Langkah 2 · A Little Surprise 💖</p>
+     <div class="make-wish-confetti" aria-hidden="true">💗 ✨ 🎉 ✨ 💗</div>
+     <p class="make-wish-copy">Selamat ulang tahun, Sayang. Semoga semua doa baik menemukan jalannya untukmu. Kamu pantas mendapatkan banyak kebahagiaan. 🌷</p>
+     <button id="make-wish-open-letter" class="make-wish-action" type="button">Lanjutkan ke harapan 🌠</button>
+    </div>
+
+    <div id="make-wish-stage-write" class="make-wish-stage" hidden>
+     <p class="make-wish-stage-title">Langkah 3 · Your Wish 🌠</p>
+     <p class="make-wish-copy">Apa harapan yang ingin kamu titipkan di hari spesial ini, sayang? Tulis di sini. Harapanmu akan dikirim langsung ke Arul. ❤️</p>
+     <form id="make-wish-form" class="make-wish-form">
+      <label class="make-wish-label" for="make-wish-input">Harapanmu untuk hari ini atau masa depan 💗</label>
+      <textarea id="make-wish-input" class="make-wish-input" maxlength="500" placeholder="Tulis harapan kamu di sini..." required></textarea>
+      <button class="make-wish-submit" type="submit">Kirim harapan ✉️</button>
+     </form>
+    </div>
+
+    <div id="make-wish-result" class="make-wish-result" hidden aria-live="polite">
+     <p class="make-wish-result-title">Langkah 4 · One Last Thing ❤️</p>
+     <p id="make-wish-result-text" class="make-wish-result-text"></p>
+     <p id="make-wish-email-status" class="make-wish-result-text">Harapanmu berhasil dikirim. ❤️</p>
+     <div id="make-wish-final-surprise" class="make-wish-letter" style="margin-top:1rem;text-align:center">Aku nggak tahu semua hal yang akan kita temui nanti, tapi aku mau terus berusaha supaya kita bisa menciptakan lebih banyak alasan untuk bahagia bersama. Pelan-pelan, ya sayang. Kita jaga harapan ini bareng-bareng. 🫶🏻 ❤️
+
+— Calon Suami❤️</div>
+    </div>
+    <p class="make-wish-hint" id="make-wish-hint" aria-live="polite">Baca suratnya dulu, lalu lanjutkan kejutan satu per satu 💌</p>
    </section>
   </main>
   <div id="reader-modal" class="reader-modal" role="dialog" aria-modal="true" aria-labelledby="reader-section-label">
@@ -1154,7 +1187,7 @@ Selalu kamu.
       });
 
       const envelope=document.getElementById("envelope"),letter=document.getElementById("letter-paper");
-      envelope.addEventListener("click",()=>{envelope.classList.add("open");envelope.setAttribute("aria-expanded","true");letter.classList.add("show")});
+      envelope.addEventListener("click",()=>{envelope.classList.add("open");envelope.setAttribute("aria-expanded","true");envelope.dataset.openedOnce="true";letter.classList.add("show")});
       document.getElementById("letter-close").addEventListener("click",()=>{envelope.classList.remove("open");envelope.setAttribute("aria-expanded","false");letter.classList.remove("show");envelope.focus()});
       document.getElementById("gift").addEventListener("click",function(){this.setAttribute("aria-expanded","true");document.getElementById("final-message").classList.remove("hidden-state")});
       document.addEventListener("keydown",e=>{if(e.key==="Escape"){if(invitationModal.classList.contains("show"))closeInvitation();else if(modal.classList.contains("show"))closeReader();else if(letter.classList.contains("show"))document.getElementById("letter-close").click()}});
@@ -1587,64 +1620,93 @@ document.addEventListener('DOMContentLoaded',()=>{const btn=document.getElementB
  const PUBLIC_KEY='B2tVzaVf5JB9RMbDE';
  const TO_EMAIL='arullrn@gmail.com';
  function initMakeAWish(){
-  const star=document.getElementById('make-wish-star');
+  const ids=['make-wish-stage-cake','make-wish-stage-surprise','make-wish-stage-write'];
+  const stages=ids.map(id=>document.getElementById(id));
+  const cake=document.getElementById('make-wish-cake');
+  const blow=document.getElementById('make-wish-blow');
+  const openLetter=document.getElementById('make-wish-open-letter');
+  const envelope=document.getElementById('envelope');
+ const letterSection=document.getElementById('letter');
+ const letterContinue=document.getElementById('letter-make-wish-continue');
   const form=document.getElementById('make-wish-form');
   const input=document.getElementById('make-wish-input');
   const result=document.getElementById('make-wish-result');
   const resultText=document.getElementById('make-wish-result-text');
+  const writeStageTitle=document.querySelector('#make-wish-stage-write .make-wish-stage-title');
   const hint=document.getElementById('make-wish-hint');
-  const again=document.getElementById('make-wish-again');
   const status=document.getElementById('make-wish-email-status');
+  let openedFromWishFlow=false;
   const submit=form&&form.querySelector('button[type="submit"]');
-  if(!star||!form||!input||!result||star.dataset.bound)return;
-  star.dataset.bound='true';
+  if(!form||!input||!result||!blow||blow.dataset.bound)return;
+  blow.dataset.bound='true';
   if(window.emailjs){emailjs.init({publicKey:PUBLIC_KEY});}
-  star.addEventListener('click',function(){
-   const opening=form.hidden;form.hidden=!opening;result.hidden=true;
-   star.setAttribute('aria-expanded',String(opening));
-   hint.textContent=opening?'satu harapan kecil, khusus untuk kita 💫':'sentuh bintangnya untuk mulai ✨';
-   if(opening)input.focus({preventScroll:true});
+  function showStage(index){stages.forEach((stage,i)=>{if(stage)stage.hidden=i!==index;});result.hidden=true;}
+  function scrollFeature(){document.getElementById('make-a-wish').scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'nearest'});}
+  blow.addEventListener('click',function(){
+   if(cake)cake.classList.add('blown');
+   blow.disabled=true;blow.textContent='Lilin sudah ditiup 💨';
+   hint.textContent='Semoga semua doa baikmu terkabul… 💖';
+   window.setTimeout(()=>{showStage(1);hint.textContent='Satu kejutan kecil lagi menunggumu 💌';scrollFeature();},850);
+  });
+  function hasOpenedLetter(){
+   return !!(letterSection&&letterSection.querySelector('#letter-paper.show')) || !!(envelope&&envelope.dataset.openedOnce==='true');
+  }
+  function updateWishPath(){
+   if(openLetter)openLetter.textContent=hasOpenedLetter()?'Lanjutkan ke harapan 🌠':'Buka surat dulu 💌';
+  }
+  updateWishPath();
+  openLetter.addEventListener('click',function(){
+   if(!hasOpenedLetter()){
+    openedFromWishFlow=true;
+    hint.textContent='Ada surat kecil dari Arul untukmu. Buka dan baca pelan-pelan, ya sayang ❤️';
+    if(letterSection)letterSection.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
+    if(envelope&&!hasOpenedLetter())envelope.click();
+    updateWishPath();
+    return;
+   }
+   if(writeStageTitle)writeStageTitle.textContent='Langkah 3 · Your Wish 🌠';
+   showStage(2);
+   hint.textContent='Sekarang tulis harapanmu dengan sepenuh hati 🌠';
+   scrollFeature();
+   input.focus({preventScroll:true});
+  });
+  if(letterContinue)letterContinue.addEventListener('click',function(){
+   if(openedFromWishFlow){
+    openedFromWishFlow=false;
+    if(writeStageTitle)writeStageTitle.textContent='Langkah 4 · Your Wish 🌠';
+    showStage(2);
+    hint.textContent='Sekarang tulis harapanmu dengan sepenuh hati 🌠';
+    scrollFeature();
+    input.focus({preventScroll:true});
+    return;
+   }
+   showStage(0);
+   hint.textContent=hasOpenedLetter()?'Suratnya sudah dibaca. Sekarang pejamkan mata dan buat harapan, ya sayang ❤️':'Mulai kejutanmu dengan meniup lilin, ya sayang 🎂';
+   scrollFeature();
   });
   form.addEventListener('submit',async function(event){
    event.preventDefault();
    const wish=input.value.trim();if(!wish){input.focus();return;}
-   if(!window.emailjs){
-    hint.textContent='Layanan email belum termuat. Coba periksa koneksi internet lalu ulangi.';
-    return;
-   }
+   if(!window.emailjs){hint.textContent='Layanan email belum termuat. Periksa koneksi internet lalu coba lagi.';return;}
    if(submit){submit.disabled=true;submit.textContent='Mengirim harapan…';}
-   hint.textContent='Harapanmu sedang dikirim ke Arul… 💌';
-   const params={
-    to_email:TO_EMAIL,
-    recipient:TO_EMAIL,
-    to_name:'Arul',
-    from_name:'Pengunjung website',
-    reply_to:'',
-    subject:'Harapan untuk kita ❤️',
-    message:'Hai Arul! Ada harapan yang ingin aku sampaikan untuk hubungan kita:\n\n'+wish+'\n\n— Dikirim dari fitur Make a Wish 💫',
-    wish:wish
-   };
+   hint.textContent='Harapanmu sedang dikirim… 💌';
+   const params={to_email:TO_EMAIL,recipient:TO_EMAIL,to_name:'Arul',from_name:'Sayang',reply_to:'',subject:'Harapan ulang tahun Sayang ❤️',message:`Hai Arul! Ini harapan dari Calon istrimu di hari ulang tahunku:
+
+${wish}
+
+— Dikirim dari fitur Make a Wish 💫`,wish:wish};
    try{
     await emailjs.send(SERVICE_ID,TEMPLATE_ID,params);
-    resultText.textContent='Harapanmu: “'+wish+'”';
+    resultText.textContent='Harapanku: “'+wish+'”';
     if(status)status.textContent='Harapanmu berhasil dikirim. ❤️';
-    result.hidden=false;form.hidden=true;star.setAttribute('aria-expanded','false');
-    hint.textContent='harapanmu sudah terkirim ke Arul ✉️';
-    result.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'nearest'});
+    showStage(-1);result.hidden=false;form.hidden=false;
+    hint.textContent='Satu harapan sudah dikirim. Semoga hal baik datang kepadamu. ❤️';scrollFeature();
    }catch(error){
     console.error('EmailJS send failed:',error);
-    hint.textContent='Email belum berhasil dikirim. Periksa koneksi atau konfigurasi template, lalu coba lagi.';
-    if(status)status.textContent='Pengiriman langsung gagal. Periksa koneksi dan konfigurasi email, lalu tekan “Buat harapan lagi” untuk mencoba kembali.';
-    resultText.textContent='Harapanmu: “'+wish+'”';
-    result.hidden=false;
-   }finally{
-    if(submit){submit.disabled=false;submit.textContent='Kirim harapan ke Arul ✉️';}
-   }
-  });
-  if(again)again.addEventListener('click',function(){
-   input.value='';result.hidden=true;form.hidden=false;
-   if(status)status.textContent='Harapanmu akan dikirim langsung lewat email. ❤️';
-   hint.textContent='kali ini, apa harapanmu? 💫';star.setAttribute('aria-expanded','true');input.focus({preventScroll:true});
+    hint.textContent='Email belum berhasil dikirim. Periksa koneksi atau konfigurasi EmailJS, lalu coba lagi.';
+    if(status)status.textContent='Harapan belum berhasil dikirim. Silakan coba lagi.';
+    result.hidden=true;
+   }finally{if(submit){submit.disabled=false;submit.textContent='Kirim harapan ✉️';}}
   });
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initMakeAWish,{once:true});else initMakeAWish();
