@@ -427,6 +427,94 @@ body:has(#reader-modal.show) .music-dock{left:auto!important;right:12px!importan
 @media(max-width:600px){.secret-message-section{padding:12px}.secret-message-wrap{max-height:calc(100dvh - 24px);padding:20px 15px;border-radius:18px}.secret-message-paper{border-radius:18px}.secret-message-paper p{font-size:13.5px;line-height:1.85}}
 @media(prefers-reduced-motion:reduce){.secret-message-paper{animation:none}.secret-message-trigger{transition:none}}
 </style>
+
+<style>
+/* Anniversary counter — added as a self-contained feature; existing sections and controls stay unchanged. */
+.anniversary-counter{position:relative;isolation:isolate;overflow:hidden;width:min(100%,650px);margin:2.5rem auto 0;padding:clamp(1.4rem,4vw,2.2rem);border-radius:28px;text-align:center;background:linear-gradient(145deg,rgba(32,22,48,.88),rgba(12,14,31,.88));border:1px solid rgba(231,189,129,.25);box-shadow:0 18px 55px rgba(0,0,0,.2),inset 0 0 35px rgba(233,165,169,.035)}
+.anniversary-counter:before{content:"";position:absolute;z-index:-1;inset:-40%;pointer-events:none;background:radial-gradient(ellipse at 50% 0%,rgba(233,165,169,.14),transparent 48%)}
+.anniversary-eyebrow{margin:0;color:#e7bd81;font:600 .65rem/1.5 "Space Mono",monospace;letter-spacing:.2em}
+.anniversary-title{margin:.65rem 0 0;color:#fff4e8;font-size:clamp(1.45rem,4.6vw,2rem);font-weight:500}
+.anniversary-title span{color:#e9a5a9;font-family:serif}
+.anniversary-date{margin:.55rem 0 0;color:rgba(240,226,226,.65);font-size:.78rem;letter-spacing:.025em}
+.anniversary-together{display:flex;align-items:baseline;justify-content:center;gap:.55rem;margin:1.5rem 0 .2rem}
+.anniversary-together strong{color:#f2d39d;font:500 clamp(2.7rem,9vw,4rem)/1 "Playfair Display",serif;text-shadow:0 0 28px rgba(245,216,161,.15);font-variant-numeric:tabular-nums}
+.anniversary-together span{color:#f0e2e2;font-size:.9rem}
+.anniversary-duration{margin:.5rem 0 1.5rem;color:#d7c9d2;font-size:.86rem}
+.anniversary-divider{display:flex;align-items:center;gap:.8rem;color:rgba(231,189,129,.75);font-size:.68rem;letter-spacing:.04em}
+.anniversary-divider:before,.anniversary-divider:after{content:"";height:1px;flex:1;background:linear-gradient(90deg,transparent,rgba(231,189,129,.3))}.anniversary-divider:after{transform:rotate(180deg)}
+.anniversary-countdown{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.6rem;margin:1rem auto 0;max-width:430px}
+.anniversary-countdown>div{display:flex;flex-direction:column;gap:.4rem;padding:.8rem .35rem;border:1px solid rgba(233,165,169,.13);border-radius:14px;background:rgba(255,255,255,.035)}
+.anniversary-countdown strong{color:#f5d8a1;font:500 clamp(1.35rem,4.6vw,1.9rem)/1 "Space Mono",monospace;font-variant-numeric:tabular-nums}
+.anniversary-countdown small{color:rgba(240,226,226,.62);font-size:.65rem;letter-spacing:.08em;text-transform:uppercase}
+.anniversary-note{max-width:420px;margin:1.2rem auto 0;color:rgba(247,234,216,.72);font:italic .9rem/1.7 "Playfair Display",serif}
+@media(max-width:420px){.anniversary-counter{border-radius:22px;padding:1.3rem 1rem}.anniversary-countdown{gap:.4rem}.anniversary-countdown>div{padding:.75rem .15rem}.anniversary-divider{font-size:.61rem}}
+@media(prefers-reduced-motion:reduce){.anniversary-counter *{scroll-behavior:auto}}
+</style>
+<script id="anniversary-counter-script">
+(function(){
+ function initAnniversaryCounter(){
+  const start=new Date(2025,11,16,0,0,0,0);
+  const ids={days:document.getElementById('anniversary-days'),hours:document.getElementById('anniversary-hours'),minutes:document.getElementById('anniversary-minutes'),seconds:document.getElementById('anniversary-seconds'),total:document.getElementById('anniversary-total-days'),duration:document.getElementById('anniversary-duration')};
+  if(!ids.days||!ids.total||!ids.duration)return;
+  const pad=n=>String(n).padStart(2,'0');
+  function calendarDuration(from,to){
+   let years=to.getFullYear()-from.getFullYear();
+   let months=to.getMonth()-from.getMonth();
+   let days=to.getDate()-from.getDate();
+   if(days<0){months--;const previousMonth=new Date(to.getFullYear(),to.getMonth(),0);days+=previousMonth.getDate();}
+   if(months<0){years--;months+=12;}
+   const parts=[];if(years)parts.push(years+' tahun');if(months)parts.push(months+' bulan');if(days||!parts.length)parts.push(days+' hari');
+   return parts.join(' ');
+  }
+  function tick(){
+   const now=new Date();
+   if(now<start){ids.total.textContent='0';ids.duration.textContent='Cerita kita akan dimulai sebentar lagi.';return;}
+   const totalDays=Math.floor((new Date(now.getFullYear(),now.getMonth(),now.getDate())-start)/86400000);
+   ids.total.textContent=totalDays.toLocaleString('id-ID');
+   ids.duration.textContent=calendarDuration(start,now)+' bersama dan terus bertambah.';
+   let next=new Date(now.getFullYear(),11,16,0,0,0,0);
+   if(next<=now)next=new Date(now.getFullYear()+1,11,16,0,0,0,0);
+   const diff=Math.max(0,next-now),seconds=Math.floor(diff/1000);
+   ids.days.textContent=String(Math.floor(seconds/86400)).padStart(2,'0');
+   ids.hours.textContent=pad(Math.floor(seconds%86400/3600));
+   ids.minutes.textContent=pad(Math.floor(seconds%3600/60));
+   ids.seconds.textContent=pad(seconds%60);
+  }
+  tick();window.setInterval(tick,1000);
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initAnniversaryCounter,{once:true});else initAnniversaryCounter();
+})();
+</script>
+
+
+<style id="make-a-wish-styles">
+/* Make a Wish — self-contained feature; keeps existing sections and controls intact. */
+.make-wish-section{position:relative;isolation:isolate;overflow:hidden;width:min(100%,650px);margin:2.5rem auto 1.5rem;padding:clamp(1.4rem,4vw,2.4rem);text-align:center;border:1px solid rgba(194,168,255,.2);border-radius:28px;background:radial-gradient(ellipse at 50% 0%,rgba(124,92,190,.19),transparent 60%),linear-gradient(150deg,rgba(24,22,51,.92),rgba(11,15,34,.94));box-shadow:0 18px 55px rgba(0,0,0,.2)}
+.make-wish-eyebrow{margin:0;color:#d8c5ff;font:600 .65rem/1.5 "Space Mono",monospace;letter-spacing:.2em}
+.make-wish-title{margin:.65rem 0 0;color:#fff4f8;font-size:clamp(1.5rem,4.8vw,2.15rem);font-weight:500}
+.make-wish-copy{max-width:420px;margin:.85rem auto 0;color:rgba(241,232,255,.76);font-size:.9rem;line-height:1.8}
+.make-wish-star{position:relative;display:grid;place-items:center;width:96px;height:96px;margin:1.4rem auto .6rem;border:1px solid rgba(222,203,255,.28);border-radius:50%;color:#f7e5ff;background:radial-gradient(circle,rgba(177,141,255,.18),rgba(255,255,255,.025) 68%);font-size:2.8rem;cursor:pointer;transition:transform .25s ease,box-shadow .25s ease;box-shadow:0 0 32px rgba(163,123,255,.12);animation:wishStarFloat 3.5s ease-in-out infinite}
+.make-wish-star:before{content:"";position:absolute;width:118px;height:1px;transform:rotate(-35deg) translateX(-7px);transform-origin:center;background:linear-gradient(90deg,transparent,rgba(220,201,255,.8),transparent);pointer-events:none}
+.make-wish-star:hover,.make-wish-star:focus-visible{transform:scale(1.07) rotate(-5deg);box-shadow:0 0 38px rgba(163,123,255,.24);outline:2px solid rgba(220,201,255,.65);outline-offset:5px}
+.make-wish-hint{color:rgba(225,212,255,.65);font-size:.73rem;letter-spacing:.04em}
+.make-wish-form{max-width:460px;margin:1.3rem auto 0;text-align:left;animation:wishReveal .45s ease both}
+.make-wish-form[hidden],.make-wish-result[hidden]{display:none}
+.make-wish-label{display:block;margin-bottom:.55rem;color:#f0e5ff;font-size:.9rem}
+.make-wish-input{display:block;width:100%;min-height:112px;resize:vertical;padding:13px 14px;border:1px solid rgba(218,199,255,.22);border-radius:14px;color:#fff5ff;background:rgba(255,255,255,.045);font:inherit;font-size:.9rem;line-height:1.7;outline:none}
+.make-wish-input::placeholder{color:rgba(232,221,250,.42)}
+.make-wish-input:focus{border-color:rgba(218,199,255,.6);box-shadow:0 0 0 3px rgba(163,123,255,.1)}
+.make-wish-submit{display:block;width:100%;margin-top:.75rem;padding:.85rem 1rem;border:1px solid rgba(220,201,255,.28);border-radius:999px;color:#20152f;background:linear-gradient(135deg,#e7d5ff,#f4d7e8);font-weight:650;cursor:pointer;transition:transform .2s ease,filter .2s ease}
+.make-wish-submit:hover{transform:translateY(-1px);filter:brightness(1.05)}
+.make-wish-result{max-width:450px;margin:1.35rem auto 0;padding:1.15rem;border:1px solid rgba(220,201,255,.18);border-radius:18px;background:rgba(255,255,255,.045);animation:wishReveal .5s ease both}
+.make-wish-result-title{margin:0;color:#e8d8ff;font:italic 1.25rem "Playfair Display",Georgia,serif}
+.make-wish-result-text{margin:.7rem 0 0;color:#f4e9f8;font-size:.9rem;line-height:1.85;overflow-wrap:anywhere}
+.make-wish-reset{margin-top:.85rem;padding:.45rem .8rem;border:1px solid rgba(220,201,255,.18);border-radius:999px;color:rgba(240,226,255,.8);background:transparent;font-size:.78rem;cursor:pointer}
+@keyframes wishStarFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes wishReveal{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:420px){.make-wish-section{padding:1.35rem 1rem;border-radius:22px}.make-wish-star{width:82px;height:82px;font-size:2.45rem}.make-wish-star:before{width:105px}}
+@media(prefers-reduced-motion:reduce){.make-wish-star{animation:none}.make-wish-form,.make-wish-result{animation:none}.make-wish-submit,.make-wish-star{transition:none}}
+</style>
+
 </head>
  <body data-template-id="__page-root">
   <div class="shooting-stars" aria-hidden="true">
@@ -462,6 +550,8 @@ body:has(#reader-modal.show) .music-dock{left:auto!important;right:12px!importan
      <div class="planet-map mt-10" aria-label="Peta navigasi interaktif">
       <div class="orbit"></div><div id="love-trigger" class="universe-indicator love-trigger" role="button" tabindex="0" aria-label="Buka Love — You and Me Still Here"><span>You &amp; Me</span><small>still here</small></div><a href="#novel" class="planet p1"><i data-lucide="book-open"></i><span>Novel Kita</span></a> <a href="#reasons" class="planet p2"><i data-lucide="heart"></i><span>Alasan</span></a> <a href="#memories" class="planet p3"><i data-lucide="images"></i><span>Kenangan</span></a> <a href="#letter" class="planet p4"><i data-lucide="mail"></i><span>Surat</span></a> <a href="#finale" class="planet p5"><i data-lucide="gift"></i><span>Surprise</span></a> <a href="#birthday" class="planet p6"><i data-lucide="cake"></i><span>Birthday</span></a>
      </div>
+
+
     </div>
    </section>
    <section id="novel" class="page-section">
@@ -661,6 +751,48 @@ body:has(#reader-modal.show) .music-dock{left:auto!important;right:12px!importan
       <p data-template-id="final-you" class="canva-text serif mt-7 text-6xl text-[#f2cf92]" style="color: rgb(242, 207, 146); font-weight: 600; font-style: normal; font-size: 16px;">sayangkuu. ❤️</p>
       <p data-template-id="final-closing" class="canva-text mx-auto mt-10 max-w-2xl leading-8 text-[#f0e2e2]" style="color: rgb(240, 226, 226); font-weight: 400; font-style: normal; font-size: 16px;">Selamat ulang tahun, sayangkuu. Semoga setiap langkahmu dijaga dalam kebaikan, setiap doamu menemukan jalannya, dan kisah kita selalu diberi ruang untuk tumbuh dengan sabar. — Syahrul Ramadhan</p><button id="return-home" data-template-id="return-home-button" type="button" class="canva-button return-home mt-8" style="color: rgb(241, 212, 158); font-weight: 600; font-style: normal; font-size: 16px;">Kembali ke Awal</button>
      </div>
+    </div>
+   </section>
+
+
+
+   <!-- Anniversary counter moved to the very end of the page content -->
+     <section id="anniversary-counter" class="anniversary-counter night-panel" aria-label="Penghitung hari hubungan kita">
+      <p class="anniversary-eyebrow">✦ OUR LITTLE UNIVERSE ✦</p>
+      <h2 class="serif anniversary-title">Kita, Sejak Hari Itu <span aria-hidden="true">♥</span></h2>
+      <p class="anniversary-date">16 Desember 2025 · Hari kita dimulai</p>
+      <div class="anniversary-together">
+       <strong id="anniversary-total-days">—</strong>
+       <span>hari bersama</span>
+      </div>
+      <p id="anniversary-duration" class="anniversary-duration" aria-live="polite">Menghitung cerita kita…</p>
+      <div class="anniversary-divider"><span>menuju anniversary berikutnya</span></div>
+      <div class="anniversary-countdown" aria-live="polite" aria-label="Hitung mundur menuju anniversary berikutnya">
+       <div><strong id="anniversary-days">00</strong><small>Hari</small></div>
+       <div><strong id="anniversary-hours">00</strong><small>Jam</small></div>
+       <div><strong id="anniversary-minutes">00</strong><small>Menit</small></div>
+       <div><strong id="anniversary-seconds">00</strong><small>Detik</small></div>
+      </div>
+      <p class="anniversary-note">Satu tanggal sederhana, dengan seseorang yang ingin aku pilih berkali-kali. ❤️</p>
+     </section>
+   <!-- Make a Wish feature, placed after the anniversary counter. -->
+   <section id="make-a-wish" class="make-wish-section" aria-labelledby="make-wish-title">
+    <p class="make-wish-eyebrow">✦ A LITTLE WISH FOR US ✦</p>
+    <h2 id="make-wish-title" class="serif make-wish-title">Make a Wish <span aria-hidden="true">🌠</span></h2>
+    <p class="make-wish-copy">Ada satu bintang jatuh buat kita. Pejamkan mata sebentar, pikirkan satu harapan kecil untuk hubungan kita, lalu sentuh bintangnya, sayang.</p>
+    <button id="make-wish-star" class="make-wish-star" type="button" aria-label="Sentuh bintang jatuh untuk membuat harapan" aria-expanded="false" aria-controls="make-wish-form">✦</button>
+    <p class="make-wish-hint" id="make-wish-hint">sentuh bintangnya untuk mulai ✨</p>
+    <form id="make-wish-form" class="make-wish-form" hidden>
+     <label class="make-wish-label" for="make-wish-input">Apa satu harapan yang paling kamu inginkan untuk kita? 💗</label>
+     <textarea id="make-wish-input" class="make-wish-input" maxlength="500" placeholder="Tulis harapan kamu di sini..." required></textarea>
+     <button class="make-wish-submit" type="submit">Kirim harapan ke Arul ✉️</button>
+    </form>
+    <div id="make-wish-result" class="make-wish-result" hidden aria-live="polite">
+     <p class="make-wish-result-title">Semoga semesta mendengar harapanmu. ❤️</p>
+     <p id="make-wish-result-text" class="make-wish-result-text"></p>
+     <p id="make-wish-email-status" class="make-wish-result-text">Harapanmu akan dikirim langsung lewat email. ❤️</p>
+     <p class="make-wish-result-text">Aku nggak tahu semua hal yang akan kita temui nanti, tapi aku mau terus berusaha supaya kita bisa menciptakan lebih banyak alasan untuk bahagia bersama. Pelan-pelan, ya sayang. Kita jaga harapan ini bareng-bareng. 🫶🏻</p>
+     <button id="make-wish-again" class="make-wish-reset" type="button">Buat harapan lagi</button>
     </div>
    </section>
   </main>
@@ -1446,4 +1578,77 @@ document.addEventListener('DOMContentLoaded',()=>{const btn=document.getElementB
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup,{once:true});else setup();
 })();
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script id="make-a-wish-script">
+(function(){
+ const SERVICE_ID='service_okvk4gg';
+ const TEMPLATE_ID='template_by8ir9h';
+ const PUBLIC_KEY='B2tVzaVf5JB9RMbDE';
+ const TO_EMAIL='arullrn@gmail.com';
+ function initMakeAWish(){
+  const star=document.getElementById('make-wish-star');
+  const form=document.getElementById('make-wish-form');
+  const input=document.getElementById('make-wish-input');
+  const result=document.getElementById('make-wish-result');
+  const resultText=document.getElementById('make-wish-result-text');
+  const hint=document.getElementById('make-wish-hint');
+  const again=document.getElementById('make-wish-again');
+  const status=document.getElementById('make-wish-email-status');
+  const submit=form&&form.querySelector('button[type="submit"]');
+  if(!star||!form||!input||!result||star.dataset.bound)return;
+  star.dataset.bound='true';
+  if(window.emailjs){emailjs.init({publicKey:PUBLIC_KEY});}
+  star.addEventListener('click',function(){
+   const opening=form.hidden;form.hidden=!opening;result.hidden=true;
+   star.setAttribute('aria-expanded',String(opening));
+   hint.textContent=opening?'satu harapan kecil, khusus untuk kita 💫':'sentuh bintangnya untuk mulai ✨';
+   if(opening)input.focus({preventScroll:true});
+  });
+  form.addEventListener('submit',async function(event){
+   event.preventDefault();
+   const wish=input.value.trim();if(!wish){input.focus();return;}
+   if(!window.emailjs){
+    hint.textContent='Layanan email belum termuat. Coba periksa koneksi internet lalu ulangi.';
+    return;
+   }
+   if(submit){submit.disabled=true;submit.textContent='Mengirim harapan…';}
+   hint.textContent='Harapanmu sedang dikirim ke Arul… 💌';
+   const params={
+    to_email:TO_EMAIL,
+    recipient:TO_EMAIL,
+    to_name:'Arul',
+    from_name:'Pengunjung website',
+    reply_to:'',
+    subject:'Harapan untuk kita ❤️',
+    message:'Hai Arul! Ada harapan yang ingin aku sampaikan untuk hubungan kita:\n\n'+wish+'\n\n— Dikirim dari fitur Make a Wish 💫',
+    wish:wish
+   };
+   try{
+    await emailjs.send(SERVICE_ID,TEMPLATE_ID,params);
+    resultText.textContent='Harapanmu: “'+wish+'”';
+    if(status)status.textContent='Harapanmu berhasil dikirim. ❤️';
+    result.hidden=false;form.hidden=true;star.setAttribute('aria-expanded','false');
+    hint.textContent='harapanmu sudah terkirim ke Arul ✉️';
+    result.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'nearest'});
+   }catch(error){
+    console.error('EmailJS send failed:',error);
+    hint.textContent='Email belum berhasil dikirim. Periksa koneksi atau konfigurasi template, lalu coba lagi.';
+    if(status)status.textContent='Pengiriman langsung gagal. Periksa koneksi dan konfigurasi email, lalu tekan “Buat harapan lagi” untuk mencoba kembali.';
+    resultText.textContent='Harapanmu: “'+wish+'”';
+    result.hidden=false;
+   }finally{
+    if(submit){submit.disabled=false;submit.textContent='Kirim harapan ke Arul ✉️';}
+   }
+  });
+  if(again)again.addEventListener('click',function(){
+   input.value='';result.hidden=true;form.hidden=false;
+   if(status)status.textContent='Harapanmu akan dikirim langsung lewat email. ❤️';
+   hint.textContent='kali ini, apa harapanmu? 💫';star.setAttribute('aria-expanded','true');input.focus({preventScroll:true});
+  });
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initMakeAWish,{once:true});else initMakeAWish();
+})();
+</script>
+
 </body></html>
