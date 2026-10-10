@@ -1203,7 +1203,7 @@ Selalu kamu.
       });
 
       const envelope=document.getElementById("envelope"),letter=document.getElementById("letter-paper");
-      envelope.addEventListener("click",()=>{envelope.classList.add("open");envelope.setAttribute("aria-expanded","true");envelope.dataset.openedOnce="true";try{localStorage.setItem("sayangLetterOpenedOnce","true")}catch(e){}letter.classList.add("show")});
+      envelope.addEventListener("click",()=>{envelope.classList.add("open");envelope.setAttribute("aria-expanded","true");envelope.dataset.openedOnce="true";letter.classList.add("show")});
       document.getElementById("letter-close").addEventListener("click",()=>{envelope.classList.remove("open");envelope.setAttribute("aria-expanded","false");letter.classList.remove("show");envelope.focus()});
       document.getElementById("gift").addEventListener("click",function(){this.setAttribute("aria-expanded","true");document.getElementById("final-message").classList.remove("hidden-state")});
       document.addEventListener("keydown",e=>{if(e.key==="Escape"){if(invitationModal.classList.contains("show"))closeInvitation();else if(modal.classList.contains("show"))closeReader();else if(letter.classList.contains("show"))document.getElementById("letter-close").click()}});
@@ -1671,12 +1671,10 @@ document.addEventListener('DOMContentLoaded',()=>{const btn=document.getElementB
   function showStage(index){stages.forEach((stage,i)=>{if(stage)stage.hidden=i!==index;});result.hidden=true;}
   function scrollFeature(){document.getElementById('make-a-wish').scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'nearest'});}
   function hasOpenedLetter(){
-   let remembered=false;
-   try{remembered=localStorage.getItem('sayangLetterOpenedOnce')==='true'}catch(e){}
-   return remembered || !!(letterSection&&letterSection.querySelector('#letter-paper.show')) || !!(envelope&&envelope.dataset.openedOnce==='true');
+   // Status hanya berlaku selama halaman ini terbuka; saat website dimuat ulang,
+   // surat kembali tertutup dan bisa dibaca lagi.
+   return !!(letterSection&&letterSection.querySelector('#letter-paper.show')) || !!(envelope&&envelope.dataset.openedOnce==='true');
   }
-  // Remember the opened state across visits, but never force the letter to reopen.
-  if(envelope&&hasOpenedLetter())envelope.dataset.openedOnce='true';
   blow.addEventListener('click',function(){
    if(cake)cake.classList.add('blown');
    blow.disabled=true;blow.textContent='Lilin sudah ditiup 💨';
