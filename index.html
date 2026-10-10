@@ -685,7 +685,7 @@ body:has(#reader-modal.show) .music-dock{left:auto!important;right:12px!importan
       <div class="our-chat-phone" aria-label="Percakapan kalian">
        <div class="our-chat-top">
         <div class="our-chat-avatar">♡</div>
-        <div><div class="our-chat-name">Sayangkuu</div><div class="our-chat-online" id="our-chat-status">our little conversation</div></div>
+        <div><div class="our-chat-name">Sayangkuu</div><div class="our-chat-online" id="our-chat-status">online</div></div>
        </div>
        <div class="our-chat-messages" id="our-chat-messages">
         <div class="our-chat-date" id="our-chat-date">11 DES · 22.17</div>
@@ -1187,7 +1187,7 @@ Selalu kamu.
       });
 
       const envelope=document.getElementById("envelope"),letter=document.getElementById("letter-paper");
-      envelope.addEventListener("click",()=>{envelope.classList.add("open");envelope.setAttribute("aria-expanded","true");envelope.dataset.openedOnce="true";letter.classList.add("show")});
+      envelope.addEventListener("click",()=>{envelope.classList.add("open");envelope.setAttribute("aria-expanded","true");envelope.dataset.openedOnce="true";try{localStorage.setItem("sayangLetterOpenedOnce","true")}catch(e){}letter.classList.add("show")});
       document.getElementById("letter-close").addEventListener("click",()=>{envelope.classList.remove("open");envelope.setAttribute("aria-expanded","false");letter.classList.remove("show");envelope.focus()});
       document.getElementById("gift").addEventListener("click",function(){this.setAttribute("aria-expanded","true");document.getElementById("final-message").classList.remove("hidden-state")});
       document.addEventListener("keydown",e=>{if(e.key==="Escape"){if(invitationModal.classList.contains("show"))closeInvitation();else if(modal.classList.contains("show"))closeReader();else if(letter.classList.contains("show"))document.getElementById("letter-close").click()}});
@@ -1448,12 +1448,13 @@ document.addEventListener('DOMContentLoaded',()=>{
     replay.disabled=true;
     next.hidden=true;
     replay.style.opacity='.55';
-    status.textContent='typing…';
+    status.textContent='online';
     clearRows();
 
     for(let i=0;i<conversation.length;i++){
       const [who,text,time]=conversation[i];
       if(who==='her'){
+        status.textContent='mengetik…';
         typing.classList.add('show');
         box.scrollTop=box.scrollHeight;
         await wait(i===0?900:700);
@@ -1462,10 +1463,11 @@ document.addEventListener('DOMContentLoaded',()=>{
         await wait(450);
       }
       add(who,text,time);
+      if(who==='her') status.textContent='online';
       await wait(650);
     }
 
-    status.textContent='our little conversation';
+    status.textContent='online';
     replay.disabled=false;
     replay.style.opacity='1';
 
@@ -1484,6 +1486,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   replay.addEventListener('click',()=>{
     // Tombol ulangi selalu mengembalikan cerita ke chat pertama.
     stage=0;
+    status.textContent='online';
     date.textContent='11 DES · 22.17';
     hint.textContent='Mengulang dari chat pertama…';
     replay.textContent='Ulangi chat pertama';
@@ -1642,15 +1645,28 @@ document.addEventListener('DOMContentLoaded',()=>{const btn=document.getElementB
   if(window.emailjs){emailjs.init({publicKey:PUBLIC_KEY});}
   function showStage(index){stages.forEach((stage,i)=>{if(stage)stage.hidden=i!==index;});result.hidden=true;}
   function scrollFeature(){document.getElementById('make-a-wish').scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'nearest'});}
+  function hasOpenedLetter(){
+   let remembered=false;
+   try{remembered=localStorage.getItem('sayangLetterOpenedOnce')==='true'}catch(e){}
+   return remembered || !!(letterSection&&letterSection.querySelector('#letter-paper.show')) || !!(envelope&&envelope.dataset.openedOnce==='true');
+  }
+  // Remember the opened state across visits, but never force the letter to reopen.
+  if(envelope&&hasOpenedLetter())envelope.dataset.openedOnce='true';
   blow.addEventListener('click',function(){
    if(cake)cake.classList.add('blown');
    blow.disabled=true;blow.textContent='Lilin sudah ditiup 💨';
+   if(hasOpenedLetter()){
+    // Surat sudah pernah dibaca: tetap tampilkan kejutan Langkah 2,
+    // lalu tombolnya membawa Sayang ke langkah menulis harapan.
+    if(openLetter)openLetter.textContent='Lanjutkan ke harapan 🌠';
+    hint.textContent='Suratnya sudah pernah dibaca, jadi tidak perlu dibuka lagi. Nikmati kejutan kecil ini dulu, ya sayang 💖';
+    showStage(1);
+    scrollFeature();
+    return;
+   }
    hint.textContent='Semoga semua doa baikmu terkabul… 💖';
-   window.setTimeout(()=>{showStage(1);hint.textContent='Satu kejutan kecil lagi menunggumu 💌';scrollFeature();},850);
+   window.setTimeout(()=>{showStage(1);if(openLetter)openLetter.textContent='Buka surat dulu 💌';hint.textContent='Sebelum menulis harapan, buka dan baca surat dari Arul dulu, ya sayang 💌';scrollFeature();},850);
   });
-  function hasOpenedLetter(){
-   return !!(letterSection&&letterSection.querySelector('#letter-paper.show')) || !!(envelope&&envelope.dataset.openedOnce==='true');
-  }
   function updateWishPath(){
    if(openLetter)openLetter.textContent=hasOpenedLetter()?'Lanjutkan ke harapan 🌠':'Buka surat dulu 💌';
   }
