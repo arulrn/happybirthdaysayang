@@ -1421,7 +1421,7 @@ document.addEventListener('DOMContentLoaded',()=>{const btn=document.getElementB
     const ready=()=>{fade(0,0.65,1800,()=>{switching=false;secretMusicActive=true;});};
     if(playing&&playing.then)playing.then(ready).catch(()=>{switching=false;});
     else ready();
-    if(label)label.textContent='Bernaung — untuk kamu ♡';
+    if(label)label.textContent='Bernaung';
    };
    if(!music.paused&&music.volume>0.01)fade(music.volume,0,1100,switchTrack);else switchTrack();
   };
